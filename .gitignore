@@ -1,5 +1,6 @@
 .dart_tool/
 .DS_Store
 .git/
+.idea/
 .packages
 pubspec.lock
