@@ -18,7 +18,7 @@ final generatedFilesPath = 'tool/colors/generated';
 
 void main(List<String> args) async {
   // Verify that we're running from the project root.
-  if (path.basename(Directory.current.path) != 'flutter-intellij') {
+  if (path.basename(Directory.current.path) != 'tools_metadata') {
     print('Please run this script from the directory root.');
     exit(1);
   }
