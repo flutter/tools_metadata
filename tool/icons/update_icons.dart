@@ -30,10 +30,8 @@ void main() async {
   generateDart(cupertinoIcons, 'tool/icon_generator/lib/cupertino.dart',
       'CupertinoIcons', 'cupertino');
 
-  // tell the user how to generate the icons
-  print('');
-  print('In order to re-generate the icons, open the iOS Simulator, and '
-      "'flutter run' from the tool/icon_generator directory.");
+  // generate the icons using the flutter app
+  await generateIcons('tool/icon_generator');
 }
 
 Future<String> downloadUrl(String url) async {
@@ -108,6 +106,15 @@ final List<IconTuple> icons = [''');
   new File(filename).writeAsStringSync(buf.toString());
 
   print('wrote $filename');
+}
+
+Future<void> generateIcons(String appFolder) async {
+  final proc = await Process.start('flutter', ['run', '-d', 'flutter-tester'],
+      workingDirectory: appFolder);
+  await Future.wait([
+    proc.stdout.pipe(stdout),
+    proc.stderr.pipe(stderr),
+  ]);
 }
 
 class Icon {
