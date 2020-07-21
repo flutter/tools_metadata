@@ -88,12 +88,12 @@ void generateDart(List<String> colors, String filename, String className) {
 // Generated file - do not edit.
 
 import '../stubs.dart';
-import '../flutter/${filename}';
+import '../flutter/$filename';
 
 final Map<String, Color> colors = <String, Color>{''');
 
   for (String colorName in colors) {
-    buf.writeln("  '${colorName}': ${className}.${colorName},");
+    buf.writeln("  '$colorName': $className.$colorName,");
   }
 
   buf.writeln('};');

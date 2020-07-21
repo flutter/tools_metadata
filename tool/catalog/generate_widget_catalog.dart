@@ -75,7 +75,7 @@ Future<void> main(List<String> args) async {
       }
 
       final ClassElement clazz = element;
-      if (clazz.allSupertypes.contains(widgetClass.type)) {
+      if (clazz.allSupertypes.contains(widgetClass.thisType)) {
         // Hide private classes.
         final String name = clazz.name;
         if (!name.startsWith('_')) {

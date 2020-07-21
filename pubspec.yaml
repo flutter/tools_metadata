@@ -1,6 +1,11 @@
 name: tool_metadata
 
+environment:
+  sdk: ">=2.8.0 <3.0.0"
+
 dependencies:
+  flutter:
+    sdk: flutter
   analyzer: ^0.39.0
   args: any
   path: ^1.7.0
