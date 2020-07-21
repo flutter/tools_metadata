@@ -24,9 +24,9 @@ void main(List<String> args) async {
 }
 
 void generatePropertiesFiles() {
-  final output = 'resources/flutter/';
-  generateProperties(material.colors, '$output/colors.properties');
-  generateProperties(cupertino.colors, '$output/cupertino_colors.properties');
+  final output = 'resources/colors';
+  generateProperties(material.colors, '$output/material.properties');
+  generateProperties(cupertino.colors, '$output/cupertino.properties');
 }
 
 void generateProperties(Map<String, Color> colors, String filename) {
@@ -52,14 +52,14 @@ void generateProperties(Map<String, Color> colors, String filename) {
   for (String name in colors.keys) {
     Color color = colors[name];
     if (color is MaterialColor) {
-      buf.writeln('$name.primary=${color}');
+      buf.writeln('$name.primary=$color');
       for (var shade in validShades) {
         if (color[shade] != null) {
           buf.writeln('$name[$shade]=${color[shade]}');
         }
       }
     } else if (color is MaterialAccentColor) {
-      buf.writeln('$name.primary=${color}');
+      buf.writeln('$name.primary=$color');
       for (var shade in validShades) {
         if (color[shade] != null) {
           buf.writeln('$name[$shade]=${color[shade]}');

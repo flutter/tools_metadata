@@ -9,7 +9,7 @@ import 'package:grinder/grinder.dart';
 main(List<String> args) => grind(args);
 
 @Task()
-@Depends(colors, icons)
+@Depends(colors, icons, catalog)
 generate() => null;
 
 @Task('Generate Flutter color information')
@@ -23,6 +23,11 @@ colors() async {
 icons() async {
   // Run tool/icons/update_icons.dart.
   await Dart.runAsync('tool/icons/update_icons.dart');
+}
+
+@Task('Generate Flutter catalog')
+catalog() async {
+  await Dart.runAsync('tool/catalog/generate_widget_catalog.dart');
 }
 
 @Task('Create Outline view icons from svgs')

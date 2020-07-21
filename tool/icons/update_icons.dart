@@ -5,6 +5,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+const outputFolder = 'resources/icons';
+
 void main() async {
   // download material/icons.dart and cupertino/icons.dart
   String materialData =
@@ -20,9 +22,9 @@ void main() async {
 
   // generate .properties files
   generateProperties(
-      materialIcons, 'resources/flutter/material_icons.properties', 'material');
-  generateProperties(cupertinoIcons,
-      'resources/flutter/cupertino_icons.properties', 'cupertino');
+      materialIcons, '$outputFolder/material.properties', 'material');
+  generateProperties(
+      cupertinoIcons, '$outputFolder/cupertino.properties', 'cupertino');
 
   // generate dart code
   generateDart(materialIcons, 'tool/icon_generator/lib/material.dart', 'Icons',
