@@ -51,8 +51,7 @@ class MyIconApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // We use this color as it works well in both IntelliJ's light theme and in
-    // Darkula.
+    // We use this color as it works well in both light and dark themes.
     const Color color = const Color(0xFF777777);
 
     Stack cupertinoSmallStack = new Stack(
