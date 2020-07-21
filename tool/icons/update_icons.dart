@@ -5,6 +5,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+const outputFolder = 'resources/icons';
+
 void main() async {
   // download material/icons.dart and cupertino/icons.dart
   String materialData =
@@ -20,9 +22,9 @@ void main() async {
 
   // generate .properties files
   generateProperties(
-      materialIcons, 'resources/flutter/material_icons.properties', 'material');
-  generateProperties(cupertinoIcons,
-      'resources/flutter/cupertino_icons.properties', 'cupertino');
+      materialIcons, '$outputFolder/material.properties', 'material');
+  generateProperties(
+      cupertinoIcons, '$outputFolder/cupertino.properties', 'cupertino');
 
   // generate dart code
   generateDart(materialIcons, 'tool/icon_generator/lib/material.dart', 'Icons',
@@ -30,17 +32,20 @@ void main() async {
   generateDart(cupertinoIcons, 'tool/icon_generator/lib/cupertino.dart',
       'CupertinoIcons', 'cupertino');
 
-  // tell the user how to generate the icons
-  print('');
-  print('In order to re-generate the icons, open the iOS Simulator, and '
-      "'flutter run' from the tool/icon_generator directory.");
+  // generate the icons using the flutter app
+  await generateIcons('tool/icon_generator');
 }
 
 Future<String> downloadUrl(String url) async {
-  HttpClientRequest request = await new HttpClient().getUrl(Uri.parse(url));
-  HttpClientResponse response = await request.close();
-  List<String> data = await utf8.decoder.bind(response).toList();
-  return data.join('');
+  final client = new HttpClient();
+  try {
+    HttpClientRequest request = await client.getUrl(Uri.parse(url));
+    HttpClientResponse response = await request.close();
+    List<String> data = await utf8.decoder.bind(response).toList();
+    return data.join('');
+  } finally {
+    client.close();
+  }
 }
 
 // The pattern below is meant to match lines like:
@@ -108,6 +113,15 @@ final List<IconTuple> icons = [''');
   new File(filename).writeAsStringSync(buf.toString());
 
   print('wrote $filename');
+}
+
+Future<void> generateIcons(String appFolder) async {
+  final proc = await Process.start('flutter', ['run', '-d', 'flutter-tester'],
+      workingDirectory: appFolder);
+  await Future.wait([
+    proc.stdout.pipe(stdout),
+    proc.stderr.pipe(stderr),
+  ]);
 }
 
 class Icon {

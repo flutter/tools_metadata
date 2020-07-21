@@ -1,11 +1,5 @@
-analyzer:
-  strong-mode:
-    implicit-casts: false
-  exclude:
-    - 'out/**'
-    - 'tool/icon_generator/**'
+include: package:flutter/analysis_options_user.yaml
 
-linter:
-  rules:
-    - unawaited_futures
-    - prefer_single_quotes
+analyzer:
+  exclude:
+    - 'tool/icon_generator/**'
