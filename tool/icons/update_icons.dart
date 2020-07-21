@@ -35,10 +35,15 @@ void main() async {
 }
 
 Future<String> downloadUrl(String url) async {
-  HttpClientRequest request = await new HttpClient().getUrl(Uri.parse(url));
-  HttpClientResponse response = await request.close();
-  List<String> data = await utf8.decoder.bind(response).toList();
-  return data.join('');
+  final client = new HttpClient();
+  try {
+    HttpClientRequest request = await client.getUrl(Uri.parse(url));
+    HttpClientResponse response = await request.close();
+    List<String> data = await utf8.decoder.bind(response).toList();
+    return data.join('');
+  } finally {
+    client.close();
+  }
 }
 
 // The pattern below is meant to match lines like:
