@@ -15,7 +15,6 @@ import 'package:analyzer/src/generated/source.dart';
 import 'package:path/path.dart' as path;
 
 Future<void> main(List<String> args) async {
-  // If we're run from the `tools` dir, set the cwd to the repo root.
   if (path.basename(Directory.current.path) != 'tools_metadata') {
     fail('Please run this tool from the root of the repo.');
   }
@@ -97,8 +96,12 @@ Future<void> main(List<String> args) async {
     widgets.add(_convertToJson(c, widgetClass));
   }
 
-  String version =
-      File(path.join(flutterSdkPath, 'version')).readAsStringSync().trim();
+  File versionFile = File(path.join(flutterSdkPath, 'version'));
+  if (!versionFile.existsSync()) {
+    fail("'version' file not found for the FLutter SDK.");
+  }
+
+  String version = versionFile.readAsStringSync().trim();
 
   final Map<String, dynamic> json = {
     'flutter': {
