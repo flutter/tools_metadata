@@ -9,14 +9,21 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:path/path.dart' as path;
 
 import 'cupertino.dart' as cupertino;
 import 'material.dart' as material;
 
-const String root =
-    '/Users/devoncarew/projects/flutter/flutter-intellij/resources/flutter';
+final String toolsRoot = path.normalize(path.join(Directory.current.path, '../..'));
+final String resourcesFolder = path.join(toolsRoot, 'resources/flutter');
 
 Future main() async {
+  // Verify that we're running from the project root.
+  if (path.basename(toolsRoot) != 'tools_metadata') {
+    print('Script must be run from tool/icon_generator');
+    exit(1);
+  }
+
   MyIconApp app = MyIconApp(material.icons, cupertino.icons);
   runApp(app);
 
@@ -28,18 +35,20 @@ Future main() async {
   // there is a decent amount of delay getting data from the gpu for each icon.
 
   for (material.IconTuple icon in material.icons) {
-    await findAndSave(icon.smallKey, '$root/material/${icon.name}.png',
+    await findAndSave(icon.smallKey, '$resourcesFolder/material/${icon.name}.png',
         small: true);
-    await findAndSave(icon.largeKey, '$root/material/${icon.name}@2x.png',
+    await findAndSave(icon.largeKey, '$resourcesFolder/material/${icon.name}@2x.png',
         small: false);
   }
 
   for (cupertino.IconTuple icon in cupertino.icons) {
-    await findAndSave(icon.smallKey, '$root/cupertino/${icon.name}.png',
+    await findAndSave(icon.smallKey, '$resourcesFolder/cupertino/${icon.name}.png',
         small: true);
-    await findAndSave(icon.largeKey, '$root/cupertino/${icon.name}@2x.png',
+    await findAndSave(icon.largeKey, '$resourcesFolder/cupertino/${icon.name}@2x.png',
         small: false);
   }
+
+  exit(0);
 }
 
 class MyIconApp extends StatelessWidget {
