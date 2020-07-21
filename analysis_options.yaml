@@ -1,0 +1,11 @@
+analyzer:
+  strong-mode:
+    implicit-casts: false
+  exclude:
+    - 'out/**'
+    - 'tool/icon_generator/**'
+
+linter:
+  rules:
+    - unawaited_futures
+    - prefer_single_quotes

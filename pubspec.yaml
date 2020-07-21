@@ -2,4 +2,9 @@ name: tool_metadata
 
 dependencies:
   analyzer: ^0.39.0
+  args: any
   path: ^1.7.0
+
+dev_dependencies:
+  grinder: ^0.8.0
+  http: ^0.12.0
