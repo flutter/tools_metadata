@@ -165,6 +165,7 @@ Future<ui.Image> _captureImage(Element element) {
 
   assert(!renderObject.debugNeedsPaint);
 
+  // ignore: invalid_use_of_protected_member
   final OffsetLayer layer = renderObject.layer;
   return layer.toImage(renderObject.paintBounds);
 }
