@@ -18,7 +18,7 @@ generate() => null;
 @Task('Generate Flutter color information')
 colors() async {
   await Dart.runAsync('tool/colors/update_colors.dart');
-  await Dart.runAsync('tool/colors/generate_properties.dart');
+  await Dart.runAsync('tool/colors/generate_files.dart');
 }
 
 @Task('Generate Flutter icon information')
