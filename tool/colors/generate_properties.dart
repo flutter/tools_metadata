@@ -12,6 +12,8 @@ import 'generated/colors_cupertino.dart' as cupertino;
 import 'generated/colors_material.dart' as material;
 import 'stubs.dart';
 
+const outputFolder = 'resources/colors';
+
 void main(List<String> args) async {
   // Verify that we're running from the project root.
   if (path.basename(Directory.current.path) != 'tools_metadata') {
@@ -21,68 +23,83 @@ void main(List<String> args) async {
 
   print('Generating property files:');
   generatePropertiesFiles();
+
+  print('Generating JSON files:');
+  generateJsonFiles();
 }
 
 void generatePropertiesFiles() {
-  final output = 'resources/colors';
-  generateProperties(material.colors, '$output/material.properties');
-  generateProperties(cupertino.colors, '$output/cupertino.properties');
+  generateProperties(material.colors, '$outputFolder/material.properties');
+  generateProperties(cupertino.colors, '$outputFolder/cupertino.properties');
 }
 
+void generateJsonFiles() {
+  generateJson(material.colors, '$outputFolder/material.json');
+  generateJson(cupertino.colors, '$outputFolder/cupertino.json');
+}
+
+const validShades = [50, 100, 200, 300, 350, 400, 500, 600, 700, 800, 850, 900];
+
 void generateProperties(Map<String, Color> colors, String filename) {
-  const validShades = [
-    50,
-    100,
-    200,
-    300,
-    350,
-    400,
-    500,
-    600,
-    700,
-    800,
-    850,
-    900
-  ];
   StringBuffer buf = StringBuffer();
   buf.writeln('# Generated file - do not edit.');
   buf.writeln();
   buf.writeln('# suppress inspection "UnusedProperty" for whole file');
   buf.writeln();
 
+  writeColors(
+      colors, (String name, String value) => buf.writeln('$name=$value'));
+
+  File(filename).writeAsStringSync(buf.toString());
+
+  print('wrote $filename');
+}
+
+void generateJson(Map<String, Color> colors, String filename) {
+  StringBuffer buf = StringBuffer();
+  buf.writeln('{');
+  writeColors(colors,
+      (String name, String value) => buf.writeln('\t"$name": "$value",'));
+  buf.writeln('};');
+  buf.writeln();
+
+  File(filename).writeAsStringSync(buf.toString());
+
+  print('wrote $filename');
+}
+
+void writeColors(
+    Map<String, Color> colors, writeColor(String name, String value)) {
   for (String name in colors.keys) {
     Color color = colors[name];
     if (color is MaterialColor) {
-      buf.writeln('$name.primary=$color');
+      writeColor('$name.primary', '$color');
       for (var shade in validShades) {
         if (color[shade] != null) {
-          buf.writeln('$name[$shade]=${color[shade]}');
+          writeColor('$name[$shade]', '${color[shade]}');
         }
       }
     } else if (color is MaterialAccentColor) {
-      buf.writeln('$name.primary=$color');
+      writeColor('$name.primary', '$color');
       for (var shade in validShades) {
         if (color[shade] != null) {
-          buf.writeln('$name[$shade]=${color[shade]}');
+          writeColor('$name[$shade]', '${color[shade]}');
         }
       }
     } else if (color is CupertinoDynamicColor) {
-      buf.writeln('$name=${color.color}');
-      buf.writeln('$name.darkColor=${color.darkColor}');
-      buf.writeln('$name.darkElevatedColor=${color.darkElevatedColor}');
-      buf.writeln('$name.darkHighContrastColor=${color.darkHighContrastColor}');
-      buf.writeln(
-          '$name.darkHighContrastElevatedColor=${color.darkHighContrastElevatedColor}');
-      buf.writeln('$name.elevatedColor=${color.elevatedColor}');
-      buf.writeln('$name.highContrastColor=${color.highContrastColor}');
-      buf.writeln(
-          '$name.highContrastElevatedColor=${color.highContrastElevatedColor}');
+      writeColor('$name', '${color.color}');
+      writeColor('$name.darkColor', '${color.darkColor}');
+      writeColor('$name.darkElevatedColor', '${color.darkElevatedColor}');
+      writeColor(
+          '$name.darkHighContrastColor', '${color.darkHighContrastColor}');
+      writeColor('$name.darkHighContrastElevatedColor',
+          '${color.darkHighContrastElevatedColor}');
+      writeColor('$name.elevatedColor', '${color.elevatedColor}');
+      writeColor('$name.highContrastColor', '${color.highContrastColor}');
+      writeColor('$name.highContrastElevatedColor',
+          '${color.highContrastElevatedColor}');
     } else {
-      buf.writeln('$name=$color');
+      writeColor('$name', '$color');
     }
   }
-
-  new File(filename).writeAsStringSync(buf.toString());
-
-  print('wrote $filename');
 }
