@@ -53,6 +53,7 @@ Future main() async {
         small: false);
   }
 
+  print('Finished generating icons, quitting...');
   exit(0);
 }
 
@@ -165,6 +166,7 @@ Future<ui.Image> _captureImage(Element element) {
 
   assert(!renderObject.debugNeedsPaint);
 
+  // ignore: invalid_use_of_protected_member
   final OffsetLayer layer = renderObject.layer;
   return layer.toImage(renderObject.paintBounds);
 }
