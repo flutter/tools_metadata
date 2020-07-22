@@ -13,7 +13,7 @@ import 'common.dart';
 Future<void> main(List<String> args) => grind(args);
 
 @DefaultTask()
-@Depends(analysisOptions, colors, icons, catalog)
+@Depends(analysisOptions, colors, icons, catalog, version)
 void generate() {}
 
 @Task('Sync analysis_options from Flutter')
