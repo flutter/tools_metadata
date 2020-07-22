@@ -1,6 +1,7 @@
 {
   "flutter": {
-    "version": "1.21.0-1.0.pre"
+    "version": "1.21.0-1.0.pre",
+    "channel": "dev"
   },
   "widgets": [
     {

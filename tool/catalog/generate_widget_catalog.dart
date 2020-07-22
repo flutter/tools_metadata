@@ -14,19 +14,14 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/src/generated/source.dart';
 import 'package:path/path.dart' as path;
 
+import '../common.dart';
+
 Future<void> main(List<String> args) async {
   if (path.basename(Directory.current.path) != 'tools_metadata') {
     fail('Please run this tool from the root of the repo.');
   }
 
-  ProcessResult result = Process.runSync('which', ['flutter']);
-  if (result.exitCode != 0) {
-    fail("No result from 'which flutter'");
-  }
-
-  // TODO(devoncarew): Improve how we locate the Flutter SDK.
-  final String flutterSdkPath =
-      path.dirname(path.dirname(result.stdout.trim()));
+  final String flutterSdkPath = getFlutterSdkPath();
   final String flutterPackagePath =
       path.absolute(path.join(flutterSdkPath, 'packages/flutter/lib'));
 
@@ -96,16 +91,12 @@ Future<void> main(List<String> args) async {
     widgets.add(_convertToJson(c, widgetClass));
   }
 
-  File versionFile = File(path.join(flutterSdkPath, 'version'));
-  if (!versionFile.existsSync()) {
-    fail("'version' file not found for the FLutter SDK.");
-  }
-
-  String version = versionFile.readAsStringSync().trim();
+  Map<String, String> versionInfo = calculateFlutterVersion();
 
   final Map<String, dynamic> json = {
     'flutter': {
-      'version': version,
+      'version': versionInfo['frameworkVersion'],
+      'channel': versionInfo['channel'],
     },
     'widgets': widgets,
   };

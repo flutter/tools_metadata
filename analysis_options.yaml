@@ -1,3 +1,4 @@
+# TODO(devoncarew): Replace with the flutter/flutter repo analysis options.
 include: package:flutter/analysis_options_user.yaml
 
 analyzer:

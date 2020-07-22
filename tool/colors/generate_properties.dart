@@ -48,6 +48,7 @@ void generateProperties(Map<String, Color> colors, String filename) {
   buf.writeln('# Generated file - do not edit.');
   buf.writeln();
   buf.writeln('# suppress inspection "UnusedProperty" for whole file');
+  buf.writeln();
 
   for (String name in colors.keys) {
     Color color = colors[name];
