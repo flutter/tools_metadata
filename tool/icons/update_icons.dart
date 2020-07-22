@@ -118,10 +118,24 @@ final List<IconTuple> icons = [''');
 Future<void> generateIcons(String appFolder) async {
   final proc = await Process.start('flutter', ['run', '-d', 'flutter-tester'],
       workingDirectory: appFolder);
-  await Future.wait([
-    proc.stdout.pipe(stdout),
-    proc.stderr.pipe(stderr),
-  ]);
+  // Errors in the Flutter app will not set the exit code, so we need to
+  // watch stdout/stderr for errors.
+  var hasError = false;
+  proc.stdout.transform(utf8.decoder).transform(LineSplitter()).listen((line) {
+    if (line.contains('ERROR:')) {
+      hasError = true;
+    }
+    stdout.writeln(line);
+  });
+  proc.stderr.transform(utf8.decoder).transform(LineSplitter()).listen((line) {
+    hasError = true;
+    stderr.writeln(line);
+  });
+
+  final exitCode = await proc.exitCode;
+  if (exitCode != 0 || hasError) {
+    throw 'Process exited with error ($exitCode)';
+  }
 }
 
 class Icon {
