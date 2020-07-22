@@ -5,6 +5,7 @@ cd "$BOTDIR/.."
 git clone https://github.com/flutter/flutter --branch dev "$BOTDIR/temp/flutter"
 export PATH="$BOTDIR/temp/flutter/bin:$PATH"
 
+flutter config --no-analytics
 flutter doctor -v
 
 echo "Fetching dependencies..."
