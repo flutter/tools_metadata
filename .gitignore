@@ -2,4 +2,5 @@
 .DS_Store
 .git/
 .packages
+bots/temp/
 pubspec.lock
