@@ -9,6 +9,7 @@ import 'package:path/path.dart' as path;
 
 import '../common.dart';
 
+// TODO(dantup): Use this from the local Flutter checkout.
 const String flutterPackageSourceUrl =
     'https://raw.githubusercontent.com/flutter/flutter/'
     '$flutterBranch/packages/flutter/lib/src';

@@ -18,6 +18,7 @@ void generate() {}
 
 @Task('Sync analysis_options from Flutter')
 Future<void> analysisOptions() async {
+  // TODO(dantup): Use this from the local Flutter checkout.
   const String analysisOptionsUrl =
       'https://raw.githubusercontent.com/flutter/flutter/$flutterBranch/analysis_options.yaml';
   final http.Client client = http.Client();
