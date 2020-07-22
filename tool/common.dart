@@ -9,6 +9,10 @@ import 'package:path/path.dart' as path;
 
 String getFlutterSdkPath() {
   // This depends on the dart SDK being in <flutter-sdk>/bin/cache/dart-sdk/bin.
+  if (!Platform.resolvedExecutable.contains('bin/cache/dart-sdk')) {
+    throw 'Please run this script from the version of dart in the Flutter SDK.';
+  }
+
   return path.dirname(path.dirname(
       path.dirname(path.dirname(path.dirname(Platform.resolvedExecutable)))));
 }
