@@ -4,7 +4,9 @@ set -e # exit on errors
 BOTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 cd "$BOTDIR/.."
 
-git clone https://github.com/flutter/flutter --branch dev "$BOTDIR/temp/flutter"
+if [ ! -d "$BOTDIR/temp/flutter" ]; then
+	git clone https://github.com/flutter/flutter --branch dev "$BOTDIR/temp/flutter"
+fi
 export PATH="$BOTDIR/temp/flutter/bin:$PATH"
 
 flutter config --no-analytics
