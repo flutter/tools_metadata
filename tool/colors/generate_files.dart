@@ -12,9 +12,9 @@ import 'generated/colors_cupertino.dart' as cupertino;
 import 'generated/colors_material.dart' as material;
 import 'stubs.dart';
 
-const outputFolder = 'resources/colors';
+const String outputFolder = 'resources/colors';
 
-void main(List<String> args) async {
+Future<void> main(List<String> args) async {
   // Verify that we're running from the project root.
   if (path.basename(Directory.current.path) != 'tools_metadata') {
     print('Please run this script from the directory root.');
@@ -38,10 +38,23 @@ void generateJsonFiles() {
   generateJson(cupertino.colors, '$outputFolder/cupertino.json');
 }
 
-const validShades = [50, 100, 200, 300, 350, 400, 500, 600, 700, 800, 850, 900];
+const List<int> validShades = <int>[
+  50,
+  100,
+  200,
+  300,
+  350,
+  400,
+  500,
+  600,
+  700,
+  800,
+  850,
+  900
+];
 
 void generateProperties(Map<String, Color> colors, String filename) {
-  StringBuffer buf = StringBuffer();
+  final StringBuffer buf = StringBuffer();
   buf.writeln('# Generated file - do not edit.');
   buf.writeln();
   buf.writeln('# suppress inspection "UnusedProperty" for whole file');
@@ -56,7 +69,7 @@ void generateProperties(Map<String, Color> colors, String filename) {
 }
 
 void generateJson(Map<String, Color> colors, String filename) {
-  StringBuffer buf = StringBuffer();
+  final StringBuffer buf = StringBuffer();
   buf.writeln('{');
   writeColors(colors,
       (String name, String value) => buf.writeln('\t"$name": "$value",'));
@@ -69,25 +82,25 @@ void generateJson(Map<String, Color> colors, String filename) {
 }
 
 void writeColors(
-    Map<String, Color> colors, writeColor(String name, String value)) {
-  for (String name in colors.keys) {
-    Color color = colors[name];
+    Map<String, Color> colors, void writeColor(String name, String value)) {
+  for (final String name in colors.keys) {
+    final Color color = colors[name];
     if (color is MaterialColor) {
       writeColor('$name.primary', '$color');
-      for (var shade in validShades) {
+      for (final int shade in validShades) {
         if (color[shade] != null) {
           writeColor('$name[$shade]', '${color[shade]}');
         }
       }
     } else if (color is MaterialAccentColor) {
       writeColor('$name.primary', '$color');
-      for (var shade in validShades) {
+      for (final int shade in validShades) {
         if (color[shade] != null) {
           writeColor('$name[$shade]', '${color[shade]}');
         }
       }
     } else if (color is CupertinoDynamicColor) {
-      writeColor('$name', '${color.color}');
+      writeColor(name, '${color.color}');
       writeColor('$name.darkColor', '${color.darkColor}');
       writeColor('$name.darkElevatedColor', '${color.darkElevatedColor}');
       writeColor(
@@ -99,7 +112,7 @@ void writeColors(
       writeColor('$name.highContrastElevatedColor',
           '${color.highContrastElevatedColor}');
     } else {
-      writeColor('$name', '$color');
+      writeColor(name, '$color');
     }
   }
 }
