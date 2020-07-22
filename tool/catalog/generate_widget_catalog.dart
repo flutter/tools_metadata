@@ -42,7 +42,7 @@ Future<void> main(List<String> args) async {
 
   print('Scanning Dart files...');
   final List<String> libraryFiles = <String>[];
-  for (String file in files) {
+  for (final String file in files) {
     final SourceKind kind = await session.getSourceKind(file);
     if (kind == SourceKind.LIBRARY) {
       libraryFiles.add(file);
@@ -59,17 +59,17 @@ Future<void> main(List<String> args) async {
 
   print('Resolving widget subclasses...');
   final List<ClassElement> classes = <ClassElement>[];
-  for (String file in libraryFiles) {
+  for (final String file in libraryFiles) {
     final ResolvedLibraryResult resolvedLibraryResult =
         await session.getResolvedLibrary(file);
 
     final LibraryElement lib = resolvedLibraryResult.element;
-    for (Element element in lib.topLevelElements) {
+    for (final Element element in lib.topLevelElements) {
       if (element is! ClassElement) {
         continue;
       }
 
-      final ClassElement clazz = element;
+      final ClassElement clazz = element as ClassElement;
       if (clazz.allSupertypes.contains(widgetClass.thisType)) {
         // Hide private classes.
         final String name = clazz.name;
@@ -87,14 +87,14 @@ Future<void> main(List<String> args) async {
   final File file = File('resources/catalog/widgets.json');
   print('Generating ${path.relative(path.absolute(file.path))}...');
   final List<Map<String, Object>> widgets = <Map<String, Object>>[];
-  for (ClassElement c in classes) {
+  for (final ClassElement c in classes) {
     widgets.add(_convertToJson(c, widgetClass));
   }
 
-  Map<String, String> versionInfo = calculateFlutterVersion();
+  final Map<String, String> versionInfo = calculateFlutterVersion();
 
-  final Map<String, dynamic> json = {
-    'flutter': {
+  final Map<String, dynamic> json = <String, dynamic>{
+    'flutter': <String, dynamic>{
       'version': versionInfo['frameworkVersion'],
       'channel': versionInfo['channel'],
     },
@@ -127,13 +127,16 @@ Map<String, Object> _convertToJson(
   }
 
   List<String> categories;
-  ElementAnnotation categoryAnnotation =
+  final ElementAnnotation categoryAnnotation =
       _getAnnotations(classElement, 'Category')
           .firstWhere((_) => true, orElse: () => null);
   if (categoryAnnotation != null) {
-    DartObject value =
+    final DartObject value =
         categoryAnnotation.computeConstantValue().getField('sections');
-    categories = value.toListValue().map((obj) => obj.toStringValue()).toList();
+    categories = value
+        .toListValue()
+        .map((DartObject obj) => obj.toStringValue())
+        .toList();
   }
 
   final Map<String, Object> m = <String, Object>{};

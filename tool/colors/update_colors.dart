@@ -7,16 +7,20 @@ import 'dart:io';
 
 import 'package:path/path.dart' as path;
 
-const flutterPackageSourceUrl =
-    'https://raw.githubusercontent.com/flutter/flutter/'
-    'master/packages/flutter/lib/src';
-const materialColorsUrl = '$flutterPackageSourceUrl/material/colors.dart';
-const cupertinoColorsUrl = '$flutterPackageSourceUrl/cupertino/colors.dart';
-final materialFile = File('tool/colors/flutter/colors_material.dart');
-final cupertinoFile = File('tool/colors/flutter/colors_cupertino.dart');
-final generatedFilesPath = 'tool/colors/generated';
+import '../common.dart';
 
-void main(List<String> args) async {
+const String flutterPackageSourceUrl =
+    'https://raw.githubusercontent.com/flutter/flutter/'
+    '$flutterBranch/packages/flutter/lib/src';
+const String materialColorsUrl =
+    '$flutterPackageSourceUrl/material/colors.dart';
+const String cupertinoColorsUrl =
+    '$flutterPackageSourceUrl/cupertino/colors.dart';
+final File materialFile = File('tool/colors/flutter/colors_material.dart');
+final File cupertinoFile = File('tool/colors/flutter/colors_cupertino.dart');
+const String generatedFilesPath = 'tool/colors/generated';
+
+Future<void> main(List<String> args) async {
   // Verify that we're running from the project root.
   if (path.basename(Directory.current.path) != 'tools_metadata') {
     print('Please run this script from the directory root.');
@@ -28,16 +32,16 @@ void main(List<String> args) async {
 }
 
 Future<void> generateDartFiles() async {
-  // TODO: Use the files from the local flutter checkout instead of a download
+  // TODO(dantup): Use the files from the local flutter checkout instead of a download
   // download material/colors.dart and cupertino/colors.dart
-  await Future.wait([
+  await Future.wait(<Future<void>>[
     downloadFile(materialColorsUrl, materialFile),
     downloadFile(cupertinoColorsUrl, cupertinoFile)
   ]);
 
   // parse into metadata
-  List<String> materialColors = extractColorNames(materialFile);
-  List<String> cupertinoColors = extractColorNames(cupertinoFile);
+  final List<String> materialColors = extractColorNames(materialFile);
+  final List<String> cupertinoColors = extractColorNames(cupertinoFile);
 
   // generate .properties files
   generateDart(materialColors, 'colors_material.dart', 'Colors');
@@ -45,14 +49,17 @@ Future<void> generateDartFiles() async {
 }
 
 Future<void> downloadFile(String url, File file) async {
-  RegExp imports = new RegExp(r'(?:^import.*;\n{1,})+', multiLine: true);
-  HttpClient client = new HttpClient();
+  final RegExp imports = RegExp(r'(?:^import.*;\n{1,})+', multiLine: true);
+  final HttpClient client = HttpClient();
   try {
-    HttpClientRequest request = await client.getUrl(Uri.parse(url));
-    HttpClientResponse response = await request.close();
-    List<String> data = await utf8.decoder.bind(response).toList();
-    String contents =
-        data.join('').replaceFirst(imports, "import '../stubs.dart';\n\n");
+    final HttpClientRequest request = await client.getUrl(Uri.parse(url));
+    final HttpClientResponse response = await request.close();
+    final List<String> data = await utf8.decoder.bind(response).toList();
+    final String contents = data.join('').replaceFirst(imports, '''
+// ignore_for_file: unused_import
+import 'package:meta/meta.dart';
+import '../stubs.dart';
+\n''');
 
     file.writeAsStringSync(
       '// This file was downloaded by update_colors.dart.\n\n'
@@ -68,12 +75,12 @@ Future<void> downloadFile(String url, File file) async {
 //   'static const MaterialColor cyan = MaterialColor('
 //   'static const CupertinoDynamicColor activeBlue = systemBlue;'
 //   'static const CupertinoDynamicColor systemGreen = CupertinoDynamicColor.withBrightnessAndContrast('
-final RegExp regexpColor = new RegExp(r'static const \w*Color (\S+) =');
+final RegExp regexpColor = RegExp(r'static const \w*Color (\S+) =');
 
 List<String> extractColorNames(File file) {
-  String data = file.readAsStringSync();
+  final String data = file.readAsStringSync();
 
-  List<String> names = regexpColor
+  final List<String> names = regexpColor
       .allMatches(data)
       .map((Match match) => match.group(1))
       .toList();
@@ -83,22 +90,22 @@ List<String> extractColorNames(File file) {
 }
 
 void generateDart(List<String> colors, String filename, String className) {
-  StringBuffer buf = StringBuffer();
+  final StringBuffer buf = StringBuffer();
   buf.writeln('''
 // Generated file - do not edit.
 
-import '../stubs.dart';
 import '../flutter/$filename';
+import '../stubs.dart';
 
 final Map<String, Color> colors = <String, Color>{''');
 
-  for (String colorName in colors) {
+  for (final String colorName in colors) {
     buf.writeln("  '$colorName': $className.$colorName,");
   }
 
   buf.writeln('};');
 
-  File out = File('$generatedFilesPath/$filename');
+  final File out = File('$generatedFilesPath/$filename');
   out.writeAsStringSync(buf.toString());
 
   print('wrote ${out.path}');

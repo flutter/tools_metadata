@@ -5,20 +5,22 @@
 import 'dart:convert';
 import 'dart:io';
 
-const outputFolder = 'resources/icons';
+import '../common.dart';
 
-void main() async {
+const String outputFolder = 'resources/icons';
+
+Future<void> main() async {
   // download material/icons.dart and cupertino/icons.dart
-  String materialData =
+  final String materialData =
       await downloadUrl('https://raw.githubusercontent.com/flutter/flutter/'
-          'master/packages/flutter/lib/src/material/icons.dart');
-  String cupertinoData =
+          '$flutterBranch/packages/flutter/lib/src/material/icons.dart');
+  final String cupertinoData =
       await downloadUrl('https://raw.githubusercontent.com/flutter/flutter/'
-          'master/packages/flutter/lib/src/cupertino/icons.dart');
+          '$flutterBranch/packages/flutter/lib/src/cupertino/icons.dart');
 
   // parse into metadata
-  List<Icon> materialIcons = parseIconData(materialData);
-  List<Icon> cupertinoIcons = parseIconData(cupertinoData);
+  final List<Icon> materialIcons = parseIconData(materialData);
+  final List<Icon> cupertinoIcons = parseIconData(cupertinoData);
 
   // generate .properties files
   generateProperties(
@@ -37,11 +39,11 @@ void main() async {
 }
 
 Future<String> downloadUrl(String url) async {
-  final client = new HttpClient();
+  final HttpClient client = HttpClient();
   try {
-    HttpClientRequest request = await client.getUrl(Uri.parse(url));
-    HttpClientResponse response = await request.close();
-    List<String> data = await utf8.decoder.bind(response).toList();
+    final HttpClientRequest request = await client.getUrl(Uri.parse(url));
+    final HttpClientResponse response = await request.close();
+    final List<String> data = await utf8.decoder.bind(response).toList();
     return data.join('');
   } finally {
     client.close();
@@ -51,7 +53,7 @@ Future<String> downloadUrl(String url) async {
 // The pattern below is meant to match lines like:
 //   'static const IconData threesixty = IconData(0xe577,'
 final RegExp regexp =
-    new RegExp(r'static const IconData (\S+) = IconData\(0x(\S+),');
+    RegExp(r'static const IconData (\S+) = IconData\(0x(\S+),');
 
 List<Icon> parseIconData(String data) {
   return regexp.allMatches(data).map((Match match) {
@@ -60,14 +62,14 @@ List<Icon> parseIconData(String data) {
 }
 
 void generateProperties(List<Icon> icons, String filename, String pathSegment) {
-  StringBuffer buf = StringBuffer();
+  final StringBuffer buf = StringBuffer();
   buf.writeln('# Generated file - do not edit.');
   buf.writeln();
   buf.writeln('# suppress inspection "UnusedProperty" for whole file');
 
-  Set<int> set = new Set();
+  final Set<int> set = <int>{};
 
-  for (Icon icon in icons) {
+  for (final Icon icon in icons) {
     buf.writeln();
 
     if (set.contains(icon.codepoint)) {
@@ -80,14 +82,14 @@ void generateProperties(List<Icon> icons, String filename, String pathSegment) {
     set.add(icon.codepoint);
   }
 
-  new File(filename).writeAsStringSync(buf.toString());
+  File(filename).writeAsStringSync(buf.toString());
 
   print('wrote $filename');
 }
 
 void generateDart(
     List<Icon> icons, String filename, String prefix, String import) {
-  StringBuffer buf = StringBuffer();
+  final StringBuffer buf = StringBuffer();
   buf.writeln('''
 // Generated file - do not edit.
 
@@ -104,45 +106,53 @@ class IconTuple {
 
 final List<IconTuple> icons = [''');
 
-  for (Icon icon in icons) {
+  for (final Icon icon in icons) {
     buf.writeln('  new IconTuple($prefix.${icon.name}, \'${icon.name}\'),');
   }
 
   buf.writeln('];');
 
-  new File(filename).writeAsStringSync(buf.toString());
+  File(filename).writeAsStringSync(buf.toString());
 
   print('wrote $filename');
 }
 
 Future<void> generateIcons(String appFolder) async {
-  final proc = await Process.start('flutter', ['run', '-d', 'flutter-tester'],
+  final Process proc = await Process.start(
+      'flutter', <String>['run', '-d', 'flutter-tester'],
       workingDirectory: appFolder);
   // Errors in the Flutter app will not set the exit code, so we need to
   // watch stdout/stderr for errors.
-  var hasError = false;
-  proc.stdout.transform(utf8.decoder).transform(LineSplitter()).listen((line) {
+  bool hasError = false;
+  proc.stdout
+      .transform(utf8.decoder)
+      .transform(const LineSplitter())
+      .listen((String line) {
     if (line.contains('ERROR:')) {
       hasError = true;
     }
     stdout.writeln(line);
   });
-  proc.stderr.transform(utf8.decoder).transform(LineSplitter()).listen((line) {
+  proc.stderr
+      .transform(utf8.decoder)
+      .transform(const LineSplitter())
+      .listen((String line) {
     hasError = true;
     stderr.writeln(line);
   });
 
-  final exitCode = await proc.exitCode;
+  final int exitCode = await proc.exitCode;
   if (exitCode != 0 || hasError) {
     throw 'Process exited with error ($exitCode)';
   }
 }
 
 class Icon {
+  Icon(this.name, this.codepoint);
+
   final String name;
   final int codepoint;
 
-  Icon(this.name, this.codepoint);
-
+  @override
   String toString() => '$name 0x${codepoint.toRadixString(16)}';
 }

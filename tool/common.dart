@@ -7,6 +7,8 @@ import 'dart:io';
 
 import 'package:path/path.dart' as path;
 
+const String flutterBranch = 'dev';
+
 String getFlutterSdkPath() {
   // This depends on the dart SDK being in <flutter-sdk>/bin/cache/dart-sdk/bin.
   if (!Platform.resolvedExecutable.contains('bin/cache/dart-sdk')) {
@@ -18,13 +20,13 @@ String getFlutterSdkPath() {
 }
 
 Map<String, String> calculateFlutterVersion() {
-  String flutterPath = path.join(getFlutterSdkPath(), 'bin/flutter');
-  ProcessResult result =
-      Process.runSync(flutterPath, ['--version', '--machine']);
+  final String flutterPath = path.join(getFlutterSdkPath(), 'bin/flutter');
+  final ProcessResult result =
+      Process.runSync(flutterPath, <String>['--version', '--machine']);
   if (result.exitCode != 0) {
     throw 'Error from flutter --version';
   }
 
-  return (jsonDecode(result.stdout.toString().trim()) as Map)
+  return (jsonDecode(result.stdout.toString().trim()) as Map<String, dynamic>)
       .cast<String, String>();
 }
