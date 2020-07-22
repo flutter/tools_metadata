@@ -3,7 +3,7 @@ BOTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 cd "$BOTDIR/.."
 
 git clone https://github.com/flutter/flutter --branch dev "$BOTDIR/temp/flutter"
-export PATH="$BOTDIR/temp/flutter:$PATH"
+export PATH="$BOTDIR/temp/flutter/bin:$PATH"
 
 flutter doctor -v
 
