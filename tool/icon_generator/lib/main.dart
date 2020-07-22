@@ -53,6 +53,7 @@ Future main() async {
         small: false);
   }
 
+  print('Finished generating icons, quitting...');
   exit(0);
 }
 
