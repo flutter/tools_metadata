@@ -68,6 +68,13 @@ Future<void> version() async {
         'generate these files using the $flutterBranch channel.';
   }
 
+  // Avoid generating needless diffs by mapping SSH clones onto the HTTPS URL.
+  // - git@github.com:flutter/flutter.git (SSH)
+  // - https://github.com/flutter/flutter (HTTPS)
+  versionInfo['repositoryUrl'] = versionInfo['repositoryUrl']
+      .replaceAll('git@github.com:', 'https://github.com/')
+      .replaceAll(RegExp(r'.git$'), '');
+
   final File versionFile = File('resources/version.json');
   const JsonEncoder encoder = JsonEncoder.withIndent('  ');
   versionFile.writeAsStringSync('${encoder.convert(versionInfo)}\n');
