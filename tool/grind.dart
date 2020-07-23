@@ -38,7 +38,7 @@ Future<void> analysisOptions() async {
     );
 
     File('analysis_options.yaml').writeAsStringSync(
-      '# This file is downloaded from the Flutter repository in grind.dart\n\n'
+      '# This file is downloaded from the Flutter repository in grind.dart.\n\n'
       '$analysisOptionsContents\n',
     );
   } finally {
