@@ -6,6 +6,8 @@
 
 // @dart = 2.8
 
+// ignore_for_file: unused_import
+import 'package:meta/meta.dart';
 import '../stubs.dart';
 
 /// Defines a single color as well a color swatch with ten shades of the color.

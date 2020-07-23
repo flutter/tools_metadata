@@ -2,20 +2,23 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-class Color {
-  final int value;
+// ignore_for_file: avoid_unused_constructor_parameters
 
+class Color {
   const Color(this.value);
   const Color.fromARGB(int a, int r, int g, int b)
       : this(a << 24 | r << 16 | g << 8 | b);
 
-  String toString() => '${value.toRadixString(16).padLeft(8, '0')}';
+  final int value;
+
+  @override
+  String toString() => value.toRadixString(16).padLeft(8, '0');
 }
 
 class ColorSwatch<T> extends Color {
-  final Map<T, Color> swatch;
-
   const ColorSwatch(int primary, this.swatch) : super(primary);
+
+  final Map<T, Color> swatch;
 
   /// Returns an element of the swatch table.
   Color operator [](T index) => swatch[index];
@@ -61,12 +64,9 @@ class _Jenkins {
   }
 }
 
-const immutable = Object();
-const kNoDefaultValue = null;
+const dynamic kNoDefaultValue = null;
 
-const required = Object();
-
-objectRuntimeType(dynamic a, dynamic b) => null;
+dynamic objectRuntimeType(dynamic a, dynamic b) => null;
 
 enum Brightness { light, dark }
 
@@ -74,13 +74,13 @@ class BuildContext {}
 
 class ColorProperty extends DiagnosticsProperty<Color> {
   ColorProperty(
-    a,
-    b, {
+    dynamic a,
+    dynamic b, {
     dynamic description,
     dynamic showName,
     dynamic defaultValue,
-    style,
-    level,
+    dynamic style,
+    dynamic level,
   }) : super(a, b);
 }
 
@@ -98,13 +98,13 @@ class CupertinoUserInterfaceLevel {
 enum CupertinoUserInterfaceLevelData { base, elevated }
 
 class Diagnosticable {
-  debugFillProperties(DiagnosticPropertiesBuilder properties) {}
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {}
 }
 
 enum DiagnosticLevel { info }
 
 class DiagnosticPropertiesBuilder {
-  add(dynamic a) {}
+  void add(dynamic a) {}
 }
 
 class DiagnosticsProperty<T> {
@@ -114,8 +114,8 @@ class DiagnosticsProperty<T> {
     dynamic description,
     dynamic showName,
     dynamic defaultValue,
-    style,
-    level,
+    dynamic style,
+    dynamic level,
   });
 }
 
