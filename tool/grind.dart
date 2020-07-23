@@ -13,7 +13,7 @@ import 'common.dart';
 Future<void> main(List<String> args) => grind(args);
 
 @DefaultTask()
-@Depends(analysisOptions, colors, icons, catalog, version)
+@Depends(version, analysisOptions, colors, icons, catalog)
 void generate() {}
 
 @Task('Sync analysis_options from Flutter')
@@ -61,6 +61,12 @@ Future<void> catalog() async {
 @Task('Generate the version.json file')
 Future<void> version() async {
   final Map<String, String> versionInfo = calculateFlutterVersion();
+
+  final String actualChannel = versionInfo['channel'];
+  if (actualChannel != flutterBranch) {
+    throw 'You are currently using the Flutter $actualChannel channel, please '
+        'generate these files using the $flutterBranch channel.';
+  }
 
   final File versionFile = File('resources/version.json');
   const JsonEncoder encoder = JsonEncoder.withIndent('  ');
