@@ -9,14 +9,12 @@ import 'package:path/path.dart' as path;
 
 import '../common.dart';
 
-// TODO(dantup): Use this from the local Flutter checkout.
-const String flutterPackageSourceUrl =
-    'https://raw.githubusercontent.com/flutter/flutter/'
-    '$flutterBranch/packages/flutter/lib/src';
-const String materialColorsUrl =
-    '$flutterPackageSourceUrl/material/colors.dart';
-const String cupertinoColorsUrl =
-    '$flutterPackageSourceUrl/cupertino/colors.dart';
+final String flutterPackageSourcePath =
+    '$flutterSdkPath/packages/flutter/lib/src';
+final String materialColorsPath =
+    '$flutterPackageSourcePath/material/colors.dart';
+final String cupertinoColorsPath =
+    '$flutterPackageSourcePath/cupertino/colors.dart';
 final File materialFile = File('tool/colors/flutter/colors_material.dart');
 final File cupertinoFile = File('tool/colors/flutter/colors_cupertino.dart');
 const String generatedFilesPath = 'tool/colors/generated';
@@ -33,11 +31,9 @@ Future<void> main(List<String> args) async {
 }
 
 Future<void> generateDartFiles() async {
-  // TODO(dantup): Use the files from the local flutter checkout instead of a download
-  // download material/colors.dart and cupertino/colors.dart
   await Future.wait(<Future<void>>[
-    downloadFile(materialColorsUrl, materialFile),
-    downloadFile(cupertinoColorsUrl, cupertinoFile)
+    copyFile(materialColorsPath, materialFile),
+    copyFile(cupertinoColorsPath, cupertinoFile)
   ]);
 
   // parse into metadata
@@ -49,26 +45,19 @@ Future<void> generateDartFiles() async {
   generateDart(cupertinoColors, 'colors_cupertino.dart', 'CupertinoColors');
 }
 
-Future<void> downloadFile(String url, File file) async {
+Future<void> copyFile(String sourcePath, File file) async {
   final RegExp imports = RegExp(r'(?:^import.*;\n{1,})+', multiLine: true);
-  final HttpClient client = HttpClient();
-  try {
-    final HttpClientRequest request = await client.getUrl(Uri.parse(url));
-    final HttpClientResponse response = await request.close();
-    final List<String> data = await utf8.decoder.bind(response).toList();
-    final String contents = data.join('').replaceFirst(imports, '''
+  final String fileContents = File(sourcePath).readAsStringSync();
+  final String contents = fileContents.replaceFirst(imports, '''
 // ignore_for_file: unused_import
 import 'package:meta/meta.dart';
 import '../stubs.dart';
 \n''');
 
-    file.writeAsStringSync(
-      '// This file was downloaded by update_colors.dart.\n\n'
-      '$contents',
-    );
-  } finally {
-    client.close();
-  }
+  file.writeAsStringSync(
+    '// This file was downloaded by update_colors.dart.\n\n'
+    '$contents',
+  );
 }
 
 // The pattern below is meant to match lines like:

@@ -24,5 +24,4 @@ flutter analyze
 popd
 
 echo "Generating all content"
-# TODO(dantup): Remove "generate" from the end after #8 lands.
-flutter pub run grinder generate
+flutter pub run grinder
