@@ -55,7 +55,7 @@ import '../stubs.dart';
 \n''');
 
   file.writeAsStringSync(
-    '// This file was downloaded by update_colors.dart.\n\n'
+    '// This file was copied from the Flutter SDK by update_colors.dart.\n\n'
     '$contents',
   );
 }
