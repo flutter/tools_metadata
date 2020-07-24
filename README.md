@@ -5,8 +5,9 @@ This repo holds generated metadata about the Flutter framework.
 The metadata is useful for Flutter related tooling and is currently used by
 Flutter IDE tools such as the Flutter IntelliJ and VS Code plugins.
 
-If you're using this metadata, please let us know! You can open an issue on the
-repo or add your tool to this readme via a pull request.
+If you're using this metadata, please let us know! You can open an [issue] on the
+repo (please use the `d: tools_metadata` label) or add your tool to this readme
+via a pull request.
 
 ## Tools that use this metadata
 
@@ -48,6 +49,11 @@ https://github.com/flutter/tools_metadata/tree/master/resources/icons
 
 ## Working on the repo
 
+### Existing issues
+
+We track issues for this repo in the flutter/flutter issue tracker. See issues
+with the [d: tools_metadata][issue] label for all open issues.
+
 ### Regenerating metadata
 
 To re-generate the metadata, run `flutter pub run grind generate` from the
@@ -58,3 +64,4 @@ we're regenerating from the dev channel.
 
 [Flutter IntelliJ]: https://github.com/flutter/flutter-intellij
 [Dart-Code]: https://github.com/Dart-Code/Dart-Code
+[issue]: https://github.com/flutter/flutter/labels/d%3A%20tools_metadata
