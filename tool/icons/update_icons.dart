@@ -10,14 +10,12 @@ import '../common.dart';
 const String outputFolder = 'resources/icons';
 
 Future<void> main() async {
-  // download material/icons.dart and cupertino/icons.dart
-  // TODO(dantup): Use this from the local Flutter checkout.
   final String materialData =
-      await downloadUrl('https://raw.githubusercontent.com/flutter/flutter/'
-          '$flutterBranch/packages/flutter/lib/src/material/icons.dart');
+      File('$flutterSdkPath/packages/flutter/lib/src/material/icons.dart')
+          .readAsStringSync();
   final String cupertinoData =
-      await downloadUrl('https://raw.githubusercontent.com/flutter/flutter/'
-          '$flutterBranch/packages/flutter/lib/src/cupertino/icons.dart');
+      File('$flutterSdkPath/packages/flutter/lib/src/cupertino/icons.dart')
+          .readAsStringSync();
 
   // parse into metadata
   final List<Icon> materialIcons = parseIconData(materialData);

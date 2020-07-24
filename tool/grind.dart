@@ -6,44 +6,39 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:grinder/grinder.dart';
-import 'package:http/http.dart' as http;
+import 'package:path/path.dart' as path;
 
 import 'common.dart';
 
 Future<void> main(List<String> args) => grind(args);
 
 @DefaultTask()
-@Depends(analysisOptions, colors, icons, catalog, version)
+@Depends(version, analysisOptions, colors, icons, catalog)
 void generate() {}
 
 @Task('Sync analysis_options from Flutter')
 Future<void> analysisOptions() async {
-  // TODO(dantup): Use this from the local Flutter checkout.
-  const String analysisOptionsUrl =
-      'https://raw.githubusercontent.com/flutter/flutter/$flutterBranch/analysis_options.yaml';
-  final http.Client client = http.Client();
-  try {
-    final http.Response resp = await client.get(analysisOptionsUrl);
+  final String flutterAnalysisOptionsContents =
+      File(path.join(flutterSdkPath, 'analysis_options.yaml'))
+          .readAsStringSync();
 
-    // Additional exclusion for this project.
-    final String additionalExclusions = <String>[
-      'bots/temp/**',
-      'tool/icon_generator/**',
-    ].map((String ex) => "    - '$ex'\n").join();
+  // Additional exclusion for this project.
+  final String additionalExclusions = <String>[
+    'bots/temp/**',
+    'tool/icon_generator/**',
+  ].map((String ex) => "    - '$ex'\n").join();
 
-    // Insert them into the correct place in the analysis_options content.
-    final String analysisOptionsContents = resp.body.replaceAll(
-      '\n  exclude:\n',
-      '\n  exclude:\n$additionalExclusions',
-    );
+  // Insert them into the correct place in the analysis_options content.
+  final String analysisOptionsContents =
+      flutterAnalysisOptionsContents.replaceAll(
+    '\n  exclude:\n',
+    '\n  exclude:\n$additionalExclusions',
+  );
 
-    File('analysis_options.yaml').writeAsStringSync(
-      '# This file is downloaded from the Flutter repository in grind.dart.\n\n'
-      '$analysisOptionsContents\n',
-    );
-  } finally {
-    client.close();
-  }
+  File('analysis_options.yaml').writeAsStringSync(
+    '# This file is downloaded from the Flutter repository in grind.dart.\n\n'
+    '$analysisOptionsContents\n',
+  );
 }
 
 @Task('Generate Flutter color information')
@@ -66,6 +61,19 @@ Future<void> catalog() async {
 @Task('Generate the version.json file')
 Future<void> version() async {
   final Map<String, String> versionInfo = calculateFlutterVersion();
+
+  final String actualChannel = versionInfo['channel'];
+  if (actualChannel != flutterBranch) {
+    throw 'You are currently using the Flutter $actualChannel channel, please '
+        'generate these files using the $flutterBranch channel.';
+  }
+
+  // Avoid generating needless diffs by mapping SSH clones onto the HTTPS URL.
+  // - git@github.com:flutter/flutter.git (SSH)
+  // - https://github.com/flutter/flutter (HTTPS)
+  versionInfo['repositoryUrl'] = versionInfo['repositoryUrl']
+      .replaceAll('git@github.com:', 'https://github.com/')
+      .replaceAll(RegExp(r'.git$'), '');
 
   final File versionFile = File('resources/version.json');
   const JsonEncoder encoder = JsonEncoder.withIndent('  ');

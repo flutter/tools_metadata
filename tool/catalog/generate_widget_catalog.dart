@@ -21,7 +21,6 @@ Future<void> main(List<String> args) async {
     fail('Please run this tool from the root of the repo.');
   }
 
-  final String flutterSdkPath = getFlutterSdkPath();
   final String flutterPackagePath =
       path.absolute(path.join(flutterSdkPath, 'packages/flutter/lib'));
 

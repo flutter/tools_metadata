@@ -9,7 +9,9 @@ import 'package:path/path.dart' as path;
 
 const String flutterBranch = 'dev';
 
-String getFlutterSdkPath() {
+final String flutterSdkPath = _getFlutterSdkPath();
+
+String _getFlutterSdkPath() {
   // This depends on the dart SDK being in <flutter-sdk>/bin/cache/dart-sdk/bin.
   if (!Platform.resolvedExecutable.contains('bin/cache/dart-sdk')) {
     throw 'Please run this script from the version of dart in the Flutter SDK.';
@@ -20,7 +22,7 @@ String getFlutterSdkPath() {
 }
 
 Map<String, String> calculateFlutterVersion() {
-  final String flutterPath = path.join(getFlutterSdkPath(), 'bin/flutter');
+  final String flutterPath = path.join(flutterSdkPath, 'bin/flutter');
   final ProcessResult result =
       Process.runSync(flutterPath, <String>['--version', '--machine']);
   if (result.exitCode != 0) {
