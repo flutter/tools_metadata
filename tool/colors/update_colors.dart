@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:path/path.dart' as path;
@@ -11,12 +10,10 @@ import '../common.dart';
 
 final String flutterPackageSourcePath =
     '$flutterSdkPath/packages/flutter/lib/src';
-final String materialColorsPath =
-    '$flutterPackageSourcePath/material/colors.dart';
-final String cupertinoColorsPath =
-    '$flutterPackageSourcePath/cupertino/colors.dart';
-final File materialFile = File('tool/colors/flutter/colors_material.dart');
-final File cupertinoFile = File('tool/colors/flutter/colors_cupertino.dart');
+final File materialColorsFile =
+    File('$flutterPackageSourcePath/material/colors.dart');
+final File cupertinoColorsFile =
+    File('$flutterPackageSourcePath/cupertino/colors.dart');
 const String generatedFilesPath = 'tool/colors/generated';
 
 Future<void> main(List<String> args) async {
@@ -31,33 +28,13 @@ Future<void> main(List<String> args) async {
 }
 
 Future<void> generateDartFiles() async {
-  await Future.wait(<Future<void>>[
-    copyFile(materialColorsPath, materialFile),
-    copyFile(cupertinoColorsPath, cupertinoFile)
-  ]);
-
   // parse into metadata
-  final List<String> materialColors = extractColorNames(materialFile);
-  final List<String> cupertinoColors = extractColorNames(cupertinoFile);
+  final List<String> materialColors = extractColorNames(materialColorsFile);
+  final List<String> cupertinoColors = extractColorNames(cupertinoColorsFile);
 
   // generate .properties files
-  generateDart(materialColors, 'colors_material.dart', 'Colors');
-  generateDart(cupertinoColors, 'colors_cupertino.dart', 'CupertinoColors');
-}
-
-Future<void> copyFile(String sourcePath, File file) async {
-  final RegExp imports = RegExp(r'(?:^import.*;\n{1,})+', multiLine: true);
-  final String fileContents = File(sourcePath).readAsStringSync();
-  final String contents = fileContents.replaceFirst(imports, '''
-// ignore_for_file: unused_import
-import 'package:meta/meta.dart';
-import '../stubs.dart';
-\n''');
-
-  file.writeAsStringSync(
-    '// This file was copied from the Flutter SDK by update_colors.dart.\n\n'
-    '$contents',
-  );
+  generateDart(materialColors, 'material', 'Colors');
+  generateDart(cupertinoColors, 'cupertino', 'CupertinoColors');
 }
 
 // The pattern below is meant to match lines like:
@@ -79,13 +56,14 @@ List<String> extractColorNames(File file) {
   return Set<String>.from(names).toList()..sort();
 }
 
-void generateDart(List<String> colors, String filename, String className) {
+void generateDart(List<String> colors, String colorType, String className) {
   final StringBuffer buf = StringBuffer();
   buf.writeln('''
 // Generated file - do not edit.
 
-import '../flutter/$filename';
-import '../stubs.dart';
+import 'dart:ui';
+
+import 'package:flutter/src/$colorType/colors.dart';
 
 final Map<String, Color> colors = <String, Color>{''');
 
@@ -95,7 +73,7 @@ final Map<String, Color> colors = <String, Color>{''');
 
   buf.writeln('};');
 
-  final File out = File('$generatedFilesPath/$filename');
+  final File out = File('$generatedFilesPath/colors_$colorType.dart');
   out.writeAsStringSync(buf.toString());
 
   print('wrote ${out.path}');

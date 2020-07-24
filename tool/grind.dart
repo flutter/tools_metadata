@@ -44,7 +44,7 @@ Future<void> analysisOptions() async {
 @Task('Generate Flutter color information')
 Future<void> colors() async {
   await Dart.runAsync('tool/colors/update_colors.dart');
-  await Dart.runAsync('tool/colors/generate_files.dart');
+  await flutterRun('tool/colors/generate_files.dart');
 }
 
 @Task('Generate Flutter icon information')

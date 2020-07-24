@@ -3,14 +3,14 @@
 // found in the LICENSE file.
 
 import 'dart:io';
+import 'dart:ui';
 
+import 'package:flutter/src/cupertino/colors.dart';
+import 'package:flutter/src/material/colors.dart';
 import 'package:path/path.dart' as path;
 
-import 'flutter/colors_cupertino.dart';
-import 'flutter/colors_material.dart';
 import 'generated/colors_cupertino.dart' as cupertino;
 import 'generated/colors_material.dart' as material;
-import 'stubs.dart';
 
 const String outputFolder = 'resources/colors';
 
@@ -18,7 +18,7 @@ Future<void> main(List<String> args) async {
   // Verify that we're running from the project root.
   if (path.basename(Directory.current.path) != 'tools_metadata') {
     print('Please run this script from the directory root.');
-    exit(1);
+    exitWith(1);
   }
 
   print('Generating property files:');
@@ -26,6 +26,15 @@ Future<void> main(List<String> args) async {
 
   print('Generating JSON files:');
   generateJsonFiles();
+
+  exitWith(0);
+}
+
+Future<void> exitWith(int code) async {
+  // HACK: If we quit immediately, `flutter run` will hang trying to connect
+  // to the VM Service, so allow this to happen before we quit.
+  await Future<void>.delayed(const Duration(seconds: 1));
+  exit(code);
 }
 
 void generatePropertiesFiles() {
@@ -60,8 +69,8 @@ void generateProperties(Map<String, Color> colors, String filename) {
   buf.writeln('# suppress inspection "UnusedProperty" for whole file');
   buf.writeln();
 
-  writeColors(
-      colors, (String name, String value) => buf.writeln('$name=$value'));
+  writeColors(colors,
+      (String name, Color color) => buf.writeln('$name=${color.toHex()}'));
 
   File(filename).writeAsStringSync(buf.toString());
 
@@ -71,8 +80,10 @@ void generateProperties(Map<String, Color> colors, String filename) {
 void generateJson(Map<String, Color> colors, String filename) {
   final StringBuffer buf = StringBuffer();
   buf.writeln('{');
-  writeColors(colors,
-      (String name, String value) => buf.writeln('\t"$name": "$value",'));
+  writeColors(
+      colors,
+      (String name, Color color) =>
+          buf.writeln('\t"$name": "${color.toHex()}",'));
   buf.writeln('};');
   buf.writeln();
 
@@ -82,37 +93,40 @@ void generateJson(Map<String, Color> colors, String filename) {
 }
 
 void writeColors(
-    Map<String, Color> colors, void writeColor(String name, String value)) {
+    Map<String, Color> colors, void writeColor(String name, Color value)) {
   for (final String name in colors.keys) {
     final Color color = colors[name];
     if (color is MaterialColor) {
-      writeColor('$name.primary', '$color');
+      writeColor('$name.primary', color);
       for (final int shade in validShades) {
         if (color[shade] != null) {
-          writeColor('$name[$shade]', '${color[shade]}');
+          writeColor('$name[$shade]', color[shade]);
         }
       }
     } else if (color is MaterialAccentColor) {
-      writeColor('$name.primary', '$color');
+      writeColor('$name.primary', color);
       for (final int shade in validShades) {
         if (color[shade] != null) {
-          writeColor('$name[$shade]', '${color[shade]}');
+          writeColor('$name[$shade]', color[shade]);
         }
       }
     } else if (color is CupertinoDynamicColor) {
-      writeColor(name, '${color.color}');
-      writeColor('$name.darkColor', '${color.darkColor}');
-      writeColor('$name.darkElevatedColor', '${color.darkElevatedColor}');
-      writeColor(
-          '$name.darkHighContrastColor', '${color.darkHighContrastColor}');
+      writeColor(name, color.color);
+      writeColor('$name.darkColor', color.darkColor);
+      writeColor('$name.darkElevatedColor', color.darkElevatedColor);
+      writeColor('$name.darkHighContrastColor', color.darkHighContrastColor);
       writeColor('$name.darkHighContrastElevatedColor',
-          '${color.darkHighContrastElevatedColor}');
-      writeColor('$name.elevatedColor', '${color.elevatedColor}');
-      writeColor('$name.highContrastColor', '${color.highContrastColor}');
-      writeColor('$name.highContrastElevatedColor',
-          '${color.highContrastElevatedColor}');
+          color.darkHighContrastElevatedColor);
+      writeColor('$name.elevatedColor', color.elevatedColor);
+      writeColor('$name.highContrastColor', color.highContrastColor);
+      writeColor(
+          '$name.highContrastElevatedColor', color.highContrastElevatedColor);
     } else {
-      writeColor(name, '$color');
+      writeColor(name, color);
     }
   }
+}
+
+extension ColorExtensions on Color {
+  String toHex() => value.toRadixString(16).padLeft(8, '0');
 }

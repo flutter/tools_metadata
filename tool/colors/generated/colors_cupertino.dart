@@ -1,7 +1,8 @@
 // Generated file - do not edit.
 
-import '../flutter/colors_cupertino.dart';
-import '../stubs.dart';
+import 'dart:ui';
+
+import 'package:flutter/src/cupertino/colors.dart';
 
 final Map<String, Color> colors = <String, Color>{
   'activeBlue': CupertinoColors.activeBlue,
