@@ -43,7 +43,7 @@ This is a mapping of:
 - icon names to file paths for preview icons
 
 This information is available for both the Material and Cupertino icons. In
-addition, each framework icon has a 16x16 png preview image.
+addition, each framework icon has 16x16 and 32x32 preview png images.
 
 https://github.com/flutter/tools_metadata/tree/master/resources/icons
 
