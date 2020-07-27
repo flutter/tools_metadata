@@ -31,9 +31,13 @@ Future<void> main(List<String> args) async {
 }
 
 Future<void> exitWith(int code) async {
-  // HACK: If we quit immediately, `flutter run` will hang trying to connect
+  // TODO(dantup): If this is flaky, consider an alternative such as writing a
+  // well-known string that the `flutterRun` function can wait for before terminating
+  // the application.
+
+  // If we quit immediately, `flutter run` will hang trying to connect
   // to the VM Service, so allow this to happen before we quit.
-  await Future<void>.delayed(const Duration(seconds: 1));
+  await Future<void>.delayed(const Duration(seconds: 5));
   exit(code);
 }
 
