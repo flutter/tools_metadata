@@ -33,6 +33,9 @@ This is a mapping of Flutter framework color names to color values, for both the
 Material and Cupertino sets of colors. It's available in property file and json
 formats.
 
+Note: Colors are in the format `AARRGGBB` matching Flutter constructor calls (`Color(0xAARRGGBB)`)
+which has alpha in a different position than HTML/CSS hex colors (`#RRGGBBAA`).
+
 https://github.com/flutter/tools_metadata/tree/master/resources/colors
 
 ### Icons
