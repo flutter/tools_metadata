@@ -76,7 +76,7 @@ void generateProperties(List<Icon> icons, String filename, String pathSegment) {
     }
 
     buf.writeln('${icon.codepoint.toRadixString(16)}.codepoint=${icon.name}');
-    buf.writeln('${icon.name}=/flutter/$pathSegment/${icon.name}.png');
+    buf.writeln('${icon.name}=flutter/$pathSegment/${icon.name}.png');
 
     set.add(icon.codepoint);
   }
