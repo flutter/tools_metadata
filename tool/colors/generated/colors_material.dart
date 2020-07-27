@@ -1,7 +1,8 @@
 // Generated file - do not edit.
 
-import '../flutter/colors_material.dart';
-import '../stubs.dart';
+import 'dart:ui';
+
+import 'package:flutter/src/material/colors.dart';
 
 final Map<String, Color> colors = <String, Color>{
   'amber': Colors.amber,

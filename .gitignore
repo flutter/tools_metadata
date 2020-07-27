@@ -3,5 +3,6 @@
 .git/
 .idea/
 .packages
+build/
 bots/temp/
 pubspec.lock
