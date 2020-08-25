@@ -75,6 +75,9 @@ Future<void> version() async {
       .replaceAll('git@github.com:', 'https://github.com/')
       .replaceAll(RegExp(r'.git$'), '');
 
+  // Remove the local installed flutter path.
+  versionInfo.remove('flutterRoot');
+
   final File versionFile = File('resources/version.json');
   const JsonEncoder encoder = JsonEncoder.withIndent('  ');
   versionFile.writeAsStringSync('${encoder.convert(versionInfo)}\n');
