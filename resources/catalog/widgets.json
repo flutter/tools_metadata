@@ -1,6 +1,6 @@
 {
   "flutter": {
-    "version": "1.22.0-1.0.pre",
+    "version": "1.22.0-9.0.pre",
     "channel": "dev"
   },
   "widgets": [
@@ -451,18 +451,6 @@
       "library": "widgets",
       "abstract": true,
       "description": "An abstract superclass for widgets that defer their building until layout."
-    },
-    {
-      "name": "ContainedButton",
-      "parent": "ElevatedButton",
-      "library": "material",
-      "description": "Please use [ElevatedButton]."
-    },
-    {
-      "name": "ContainedButtonTheme",
-      "parent": "ElevatedButtonTheme",
-      "library": "material",
-      "description": "Please use [ElevatedButtonThemeData]."
     },
     {
       "name": "Container",
