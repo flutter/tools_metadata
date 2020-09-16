@@ -88,8 +88,7 @@ void generateJson(Map<String, Color> colors, String filename) {
       colors,
       (String name, Color color) =>
           buf.writeln('\t"$name": "${color.toHex()}",'));
-  buf.writeln('};');
-  buf.writeln();
+  buf.writeln('}');
 
   File(filename).writeAsStringSync(buf.toString());
 
