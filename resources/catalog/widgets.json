@@ -1,6 +1,6 @@
 {
   "flutter": {
-    "version": "1.22.0-9.0.pre",
+    "version": "1.22.0-12.0.pre",
     "channel": "dev"
   },
   "widgets": [
@@ -685,6 +685,12 @@
       "parent": "StatelessWidget",
       "library": "material",
       "description": "A material design data table."
+    },
+    {
+      "name": "DataTableTheme",
+      "parent": "InheritedWidget",
+      "library": "material",
+      "description": "Applies a data table theme to descendant [DataTable] widgets."
     },
     {
       "name": "DatePickerHeader",
