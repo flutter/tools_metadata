@@ -84,10 +84,11 @@ void generateProperties(Map<String, Color> colors, String filename) {
 void generateJson(Map<String, Color> colors, String filename) {
   final StringBuffer buf = StringBuffer();
   buf.writeln('{');
-  writeColors(
-      colors,
-      (String name, Color color) =>
-          buf.writeln('\t"$name": "${color.toHex()}",'));
+  final List<String> lines = <String>[];
+  writeColors(colors, (String name, Color color) {
+    lines.add('\t"$name": "${color.toHex()}"');
+  });
+  buf.writeln(lines.join(',\n'));
   buf.writeln('}');
 
   File(filename).writeAsStringSync(buf.toString());
