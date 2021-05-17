@@ -5,7 +5,7 @@ BOTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 cd "$BOTDIR/.."
 
 if [ ! -d "$BOTDIR/temp/flutter" ]; then
-	git clone https://github.com/flutter/flutter --branch dev "$BOTDIR/temp/flutter"
+	git clone https://github.com/flutter/flutter --branch beta "$BOTDIR/temp/flutter"
 fi
 export PATH="$BOTDIR/temp/flutter/bin:$PATH"
 
