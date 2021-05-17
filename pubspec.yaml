@@ -4,11 +4,12 @@ environment:
   sdk: ">=2.8.0 <3.0.0"
 
 dependencies:
-  flutter:
-    sdk: flutter
   analyzer: ^0.40.0
   args: any
+  flutter:
+    sdk: flutter
   path: ^1.7.0
 
 dev_dependencies:
   grinder: ^0.8.0
+  lints: ^1.0.0

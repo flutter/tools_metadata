@@ -96,8 +96,8 @@ void generateJson(Map<String, Color> colors, String filename) {
   print('wrote $filename');
 }
 
-void writeColors(
-    Map<String, Color> colors, void writeColor(String name, Color value)) {
+void writeColors(Map<String, Color> colors,
+    void Function(String name, Color value) writeColor) {
   for (final String name in colors.keys) {
     final Color color = colors[name];
     if (color is MaterialColor) {

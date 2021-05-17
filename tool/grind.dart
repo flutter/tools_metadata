@@ -6,40 +6,14 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:grinder/grinder.dart';
-import 'package:path/path.dart' as path;
 
 import 'common.dart';
 
 Future<void> main(List<String> args) => grind(args);
 
 @DefaultTask()
-@Depends(version, analysisOptions, colors, icons, catalog)
+@Depends(version, colors, icons, catalog)
 void generate() {}
-
-@Task('Sync analysis_options from Flutter')
-Future<void> analysisOptions() async {
-  final String flutterAnalysisOptionsContents =
-      File(path.join(flutterSdkPath, 'analysis_options.yaml'))
-          .readAsStringSync();
-
-  // Additional exclusion for this project.
-  final String additionalExclusions = <String>[
-    'bots/temp/**',
-    'tool/icon_generator/**',
-  ].map((String ex) => "    - '$ex'\n").join();
-
-  // Insert them into the correct place in the analysis_options content.
-  final String analysisOptionsContents =
-      flutterAnalysisOptionsContents.replaceAll(
-    '\n  exclude:\n',
-    '\n  exclude:\n$additionalExclusions',
-  );
-
-  File('analysis_options.yaml').writeAsStringSync(
-    '# This file is downloaded from the Flutter repository in grind.dart.\n\n'
-    '$analysisOptionsContents\n',
-  );
-}
 
 @Task('Generate Flutter color information')
 Future<void> colors() async {
