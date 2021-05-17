@@ -7,7 +7,7 @@ import 'dart:io';
 
 import 'package:path/path.dart' as path;
 
-const String flutterBranch = 'dev';
+const String flutterBranch = 'beta';
 
 final String flutterSdkPath = _getFlutterSdkPath();
 

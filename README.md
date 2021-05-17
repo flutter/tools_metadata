@@ -63,7 +63,7 @@ To re-generate the metadata, run `flutter pub run grind generate` from the
 command line. That will regenerate the metadata from the version of the flutter
 framework currently in use. Note that we do not want to commit generated
 metadata from versions of the framework from Flutter's master channel; currently
-we're regenerating from the dev channel.
+we're regenerating from the beta channel.
 
 [Flutter IntelliJ]: https://github.com/flutter/flutter-intellij
 [Dart-Code]: https://github.com/Dart-Code/Dart-Code
