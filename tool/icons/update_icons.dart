@@ -19,7 +19,10 @@ Future<void> main() async {
 
   // parse into metadata
   final List<Icon> materialIcons = parseIconData(materialData);
+  materialIcons.sort((a, b) => a.name.compareTo(b.name));
+
   final List<Icon> cupertinoIcons = parseIconData(cupertinoData);
+  cupertinoIcons.sort((a, b) => a.name.compareTo(b.name));
 
   // generate .properties files
   generateProperties(
