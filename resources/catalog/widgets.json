@@ -1,7 +1,7 @@
 {
   "flutter": {
-    "version": "1.22.0-12.0.pre",
-    "channel": "dev"
+    "version": "2.2.0-10.3.pre",
+    "channel": "beta"
   },
   "widgets": [
     {
@@ -192,6 +192,12 @@
       "description": "A widget that attempts to size the child to a specific aspect ratio."
     },
     {
+      "name": "Autocomplete",
+      "parent": "StatelessWidget",
+      "library": "material",
+      "description": "{@macro flutter.widgets.RawAutocomplete.RawAutocomplete}"
+    },
+    {
       "name": "AutofillGroup",
       "parent": "StatefulWidget",
       "library": "widgets",
@@ -214,6 +220,12 @@
       "parent": "StatelessWidget",
       "library": "material",
       "description": "A \"back\" icon that's appropriate for the current [TargetPlatform]."
+    },
+    {
+      "name": "BackButtonListener",
+      "parent": "StatefulWidget",
+      "library": "widgets",
+      "description": "A convenience widget that registers a callback for when the back button is pressed."
     },
     {
       "name": "BackdropFilter",
@@ -274,7 +286,7 @@
       "name": "Builder",
       "parent": "StatelessWidget",
       "library": "widgets",
-      "description": "A platonic widget that calls a closure to obtain its child widget."
+      "description": "A stateless utility widget whose [build] method uses its [builder] callback to create the widget's child."
     },
     {
       "name": "ButtonBar",
@@ -308,12 +320,6 @@
       "description": "Displays a grid of days for a given month and allows the user to select a date."
     },
     {
-      "name": "CalendarDateRangePicker",
-      "parent": "StatefulWidget",
-      "library": "material",
-      "description": "Displays a scrollable calendar grid that allows a user to select a range of dates."
-    },
-    {
       "name": "Card",
       "parent": "StatelessWidget",
       "library": "material",
@@ -336,6 +342,12 @@
       "parent": "StatelessWidget",
       "library": "material",
       "description": "A [ListTile] with a [Checkbox]. In other words, a checkbox with a label."
+    },
+    {
+      "name": "CheckboxTheme",
+      "parent": "InheritedWidget",
+      "library": "material",
+      "description": "Applies a checkbox theme to descendant [Checkbox] widgets."
     },
     {
       "name": "CheckedModeBanner",
@@ -453,6 +465,12 @@
       "description": "An abstract superclass for widgets that defer their building until layout."
     },
     {
+      "name": "ConstraintsTransformBox",
+      "parent": "SingleChildRenderObjectWidget",
+      "library": "widgets",
+      "description": "A container widget that applies an arbitrary transform to its constraints, and sizes its child using the resulting [BoxConstraints], treating any overflow as error."
+    },
+    {
       "name": "Container",
       "parent": "StatelessWidget",
       "library": "widgets",
@@ -513,16 +531,22 @@
       "description": "A date picker widget in iOS style."
     },
     {
-      "name": "CupertinoDialog",
-      "parent": "StatelessWidget",
-      "library": "cupertino",
-      "description": "An iOS-style dialog."
-    },
-    {
       "name": "CupertinoDialogAction",
       "parent": "StatelessWidget",
       "library": "cupertino",
       "description": "A button typically used in a [CupertinoAlertDialog]."
+    },
+    {
+      "name": "CupertinoFormRow",
+      "parent": "StatelessWidget",
+      "library": "cupertino",
+      "description": "An iOS-style form row."
+    },
+    {
+      "name": "CupertinoFormSection",
+      "parent": "StatelessWidget",
+      "library": "cupertino",
+      "description": "An iOS-style form section."
     },
     {
       "name": "CupertinoFullscreenDialogTransition",
@@ -561,6 +585,12 @@
       "description": "An iOS-styled picker."
     },
     {
+      "name": "CupertinoPickerDefaultSelectionOverlay",
+      "parent": "StatelessWidget",
+      "library": "cupertino",
+      "description": "A default selection overlay for [CupertinoPicker]s."
+    },
+    {
       "name": "CupertinoPopupSurface",
       "parent": "StatelessWidget",
       "library": "cupertino",
@@ -568,9 +598,15 @@
     },
     {
       "name": "CupertinoScrollbar",
-      "parent": "StatefulWidget",
+      "parent": "RawScrollbar",
       "library": "cupertino",
       "description": "An iOS style scrollbar."
+    },
+    {
+      "name": "CupertinoSearchTextField",
+      "parent": "StatefulWidget",
+      "library": "cupertino",
+      "description": "A [CupertinoTextField] that mimics the look and behavior of UIKit's `UISearchTextField`."
     },
     {
       "name": "CupertinoSegmentedControl",
@@ -633,10 +669,22 @@
       "description": "An iOS-style text field."
     },
     {
-      "name": "CupertinoTextSelectionToolbar",
-      "parent": "SingleChildRenderObjectWidget",
+      "name": "CupertinoTextFormFieldRow",
+      "parent": "FormField",
       "library": "cupertino",
-      "description": "An iOS-style toolbar that appears in response to text selection."
+      "description": "Creates a [CupertinoFormRow] containing a [FormField] that wraps a [CupertinoTextField]."
+    },
+    {
+      "name": "CupertinoTextSelectionToolbar",
+      "parent": "StatelessWidget",
+      "library": "cupertino",
+      "description": "An iOS-style text selection toolbar."
+    },
+    {
+      "name": "CupertinoTextSelectionToolbarButton",
+      "parent": "StatelessWidget",
+      "library": "cupertino",
+      "description": "A button in the style of the iOS text selection toolbar buttons."
     },
     {
       "name": "CupertinoTheme",
@@ -693,10 +741,16 @@
       "description": "Applies a data table theme to descendant [DataTable] widgets."
     },
     {
-      "name": "DatePickerHeader",
-      "parent": "StatelessWidget",
+      "name": "DatePickerDialog",
+      "parent": "StatefulWidget",
       "library": "material",
-      "description": "Re-usable widget that displays the selected date (in large font) and the help text above it."
+      "description": "A Material-style date picker dialog."
+    },
+    {
+      "name": "DateRangePickerDialog",
+      "parent": "StatefulWidget",
+      "library": "material",
+      "description": "A Material-style date range picker dialog."
     },
     {
       "name": "DayPicker",
@@ -727,6 +781,18 @@
       "parent": "StatefulWidget",
       "library": "material",
       "description": "The [TabController] for descendant widgets that don't specify one explicitly."
+    },
+    {
+      "name": "DefaultTextEditingActions",
+      "parent": "Actions",
+      "library": "widgets",
+      "description": "An [Actions] widget that handles the default text editing behavior for Flutter on the current platform."
+    },
+    {
+      "name": "DefaultTextEditingShortcuts",
+      "parent": "Shortcuts",
+      "library": "widgets",
+      "description": "A [Shortcuts] widget with the shortcuts used for the default text editing behavior."
     },
     {
       "name": "DefaultTextHeightBehavior",
@@ -936,7 +1002,7 @@
       "name": "FlatButton",
       "parent": "MaterialButton",
       "library": "material",
-      "description": "A material design \"flat button\"."
+      "description": "A Material Design \"flat button\"."
     },
     {
       "name": "Flex",
@@ -1089,6 +1155,12 @@
       "description": "An inherited widget to host a hero controller."
     },
     {
+      "name": "HeroMode",
+      "parent": "StatelessWidget",
+      "library": "widgets",
+      "description": "Enables or disables [Hero]es in the widget subtree."
+    },
+    {
       "name": "HtmlElementView",
       "parent": "StatelessWidget",
       "library": "widgets",
@@ -1214,12 +1286,6 @@
       "description": "A [TextFormField] configured to accept and validate a date entered by a user."
     },
     {
-      "name": "InputDateRangePicker",
-      "parent": "StatefulWidget",
-      "library": "material",
-      "description": "Provides a pair of text fields that allow the user to enter the start and end dates that represent a range of dates."
-    },
-    {
       "name": "InputDecorator",
       "parent": "StatefulWidget",
       "library": "material",
@@ -1330,7 +1396,7 @@
     },
     {
       "name": "Listener",
-      "parent": "StatelessWidget",
+      "parent": "SingleChildRenderObjectWidget",
       "library": "widgets",
       "description": "A widget that calls callbacks in response to common pointer events."
     },
@@ -1416,7 +1482,7 @@
       "name": "MouseRegion",
       "parent": "StatefulWidget",
       "library": "widgets",
-      "description": "A widget that tracks the movement of mice, even when no button is pressed."
+      "description": "A widget that tracks the movement of mice."
     },
     {
       "name": "MultiChildRenderObjectWidget",
@@ -1690,16 +1756,28 @@
       "description": "A [ListTile] with a [Radio]. In other words, a radio button with a label."
     },
     {
+      "name": "RadioTheme",
+      "parent": "InheritedWidget",
+      "library": "material",
+      "description": "Applies a radio theme to descendant [Radio] widgets."
+    },
+    {
       "name": "RaisedButton",
       "parent": "MaterialButton",
       "library": "material",
-      "description": "A material design \"raised button\"."
+      "description": "A Material Design \"raised button\"."
     },
     {
       "name": "RangeSlider",
       "parent": "StatefulWidget",
       "library": "material",
       "description": "A Material Design range slider."
+    },
+    {
+      "name": "RawAutocomplete",
+      "parent": "StatefulWidget",
+      "library": "widgets",
+      "description": "{@template flutter.widgets.RawAutocomplete.RawAutocomplete} A widget for helping the user make a selection by entering some text and choosing from among a list of options."
     },
     {
       "name": "RawChip",
@@ -1736,6 +1814,12 @@
       "description": "Creates a button based on [Semantics], [Material], and [InkWell] widgets."
     },
     {
+      "name": "RawScrollbar",
+      "parent": "StatefulWidget",
+      "library": "widgets",
+      "description": "An extendable base class for building scrollbars that fade in and out."
+    },
+    {
       "name": "RefreshIndicator",
       "parent": "StatefulWidget",
       "library": "material",
@@ -1765,6 +1849,24 @@
       "library": "widgets",
       "abstract": true,
       "description": "RenderObjectWidgets provide the configuration for [RenderObjectElement]s, which wrap [RenderObject]s, which provide the actual rendering of the application."
+    },
+    {
+      "name": "ReorderableDelayedDragStartListener",
+      "parent": "ReorderableDragStartListener",
+      "library": "widgets",
+      "description": "A wrapper widget that will recognize the start of a drag operation by looking for a long press event. Once it is recognized, it will start a drag operation on the wrapped item in the reorderable list."
+    },
+    {
+      "name": "ReorderableDragStartListener",
+      "parent": "StatelessWidget",
+      "library": "widgets",
+      "description": "A wrapper widget that will recognize the start of a drag on the wrapped widget by a [PointerDownEvent], and immediately initiate dragging the wrapped item to a new location in a reorderable list."
+    },
+    {
+      "name": "ReorderableList",
+      "parent": "StatefulWidget",
+      "library": "widgets",
+      "description": "A scrolling container that allows the user to interactively reorder the list items."
     },
     {
       "name": "ReorderableListView",
@@ -1833,6 +1935,12 @@
       "description": "Implements the basic material design visual layout structure."
     },
     {
+      "name": "ScaffoldMessenger",
+      "parent": "StatefulWidget",
+      "library": "material",
+      "description": "Manages [SnackBar]s for descendant [Scaffold]s."
+    },
+    {
       "name": "ScaleTransition",
       "parent": "AnimatedWidget",
       "library": "widgets",
@@ -1861,7 +1969,13 @@
       "name": "Scrollbar",
       "parent": "StatefulWidget",
       "library": "material",
-      "description": "A material design scrollbar."
+      "description": "A Material Design scrollbar."
+    },
+    {
+      "name": "ScrollbarTheme",
+      "parent": "InheritedWidget",
+      "library": "material",
+      "description": "Applies a scrollbar theme to descendant [Scrollbar] widgets."
     },
     {
       "name": "SelectableText",
@@ -1891,7 +2005,7 @@
       "name": "Shortcuts",
       "parent": "StatefulWidget",
       "library": "widgets",
-      "description": "A widget that establishes an [ShortcutManager] to be used by its descendants when invoking an [Action] via a keyboard key combination that maps to an [Intent]."
+      "description": "A widget to that creates key bindings to specific actions for its descendants."
     },
     {
       "name": "ShrinkWrappingViewport",
@@ -2082,6 +2196,12 @@
       "description": "A sliver that places its box children in a linear array and constrains them to have the same extent as a prototype item along the main axis."
     },
     {
+      "name": "SliverReorderableList",
+      "parent": "StatefulWidget",
+      "library": "widgets",
+      "description": "A sliver list that allows the user to interactively reorder the list items."
+    },
+    {
       "name": "SliverSafeArea",
       "parent": "StatelessWidget",
       "library": "widgets",
@@ -2178,7 +2298,7 @@
     },
     {
       "name": "Switch",
-      "parent": "StatefulWidget",
+      "parent": "StatelessWidget",
       "library": "material",
       "description": "A material design switch."
     },
@@ -2187,6 +2307,12 @@
       "parent": "StatelessWidget",
       "library": "material",
       "description": "A [ListTile] with a [Switch]. In other words, a switch with a label."
+    },
+    {
+      "name": "SwitchTheme",
+      "parent": "InheritedWidget",
+      "library": "material",
+      "description": "Applies a switch theme to descendant [Switch] widgets."
     },
     {
       "name": "Tab",
@@ -2279,6 +2405,18 @@
       "description": "An inherited widget that defines the appearance of text selection in this widget's subtree."
     },
     {
+      "name": "TextSelectionToolbar",
+      "parent": "StatelessWidget",
+      "library": "material",
+      "description": "A fully-functional Material-style text selection toolbar."
+    },
+    {
+      "name": "TextSelectionToolbarTextButton",
+      "parent": "StatelessWidget",
+      "library": "material",
+      "description": "A button styled like a Material native Android text selection menu button."
+    },
+    {
       "name": "Texture",
       "parent": "LeafRenderObjectWidget",
       "library": "widgets",
@@ -2312,7 +2450,7 @@
       "name": "ToggleButtons",
       "parent": "StatelessWidget",
       "library": "material",
-      "description": "A horizontal set of toggle buttons."
+      "description": "A set of toggle buttons."
     },
     {
       "name": "ToggleButtonsTheme",
@@ -2352,7 +2490,7 @@
     },
     {
       "name": "UnconstrainedBox",
-      "parent": "SingleChildRenderObjectWidget",
+      "parent": "StatelessWidget",
       "library": "widgets",
       "description": "A widget that imposes no constraints on its child, allowing it to render at its \"natural\" size."
     },
@@ -2433,7 +2571,7 @@
       "name": "YearPicker",
       "parent": "StatefulWidget",
       "library": "material",
-      "description": "A scrollable list of years to allow picking a year."
+      "description": "A scrollable grid of years to allow picking a year."
     }
   ]
 }
