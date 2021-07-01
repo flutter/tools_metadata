@@ -6,6 +6,7 @@ environment:
 dependencies:
   analyzer: ^0.40.0
   args: any
+  css_colors: ^1.1.1
   flutter:
     sdk: flutter
   path: ^1.7.0

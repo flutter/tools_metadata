@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'dart:io';
+import 'dart:isolate';
 
 import 'package:path/path.dart' as path;
 
@@ -14,6 +15,7 @@ final File materialColorsFile =
     File('$flutterPackageSourcePath/material/colors.dart');
 final File cupertinoColorsFile =
     File('$flutterPackageSourcePath/cupertino/colors.dart');
+File cssColorsFile;
 const String generatedFilesPath = 'tool/colors/generated';
 
 Future<void> main(List<String> args) async {
@@ -28,13 +30,20 @@ Future<void> main(List<String> args) async {
 }
 
 Future<void> generateDartFiles() async {
+  // Get the path to the source file
+  cssColorsFile = File((await Isolate.resolvePackageUri(
+          Uri.parse('package:css_colors/css_colors.dart')))
+      .toFilePath());
+
   // parse into metadata
   final List<String> materialColors = extractColorNames(materialColorsFile);
   final List<String> cupertinoColors = extractColorNames(cupertinoColorsFile);
+  final List<String> cssColors = extractColorNames(cssColorsFile);
 
   // generate .properties files
   generateDart(materialColors, 'material', 'Colors');
   generateDart(cupertinoColors, 'cupertino', 'CupertinoColors');
+  generateDart(cssColors, 'css', 'CSSColors');
 }
 
 // The pattern below is meant to match lines like:
@@ -62,8 +71,15 @@ void generateDart(List<String> colors, String colorType, String className) {
 // Generated file - do not edit.
 
 import 'dart:ui';
+''');
 
-import 'package:flutter/src/$colorType/colors.dart';
+  if (colorType == 'css') {
+    buf.writeln("import 'package:css_colors/css_colors.dart';");
+  } else {
+    buf.writeln("import 'package:flutter/src/$colorType/colors.dart';");
+  }
+
+  buf.writeln('''
 
 final Map<String, Color> colors = <String, Color>{''');
 

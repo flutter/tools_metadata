@@ -11,6 +11,7 @@ import 'package:path/path.dart' as path;
 
 import 'generated/colors_cupertino.dart' as cupertino;
 import 'generated/colors_material.dart' as material;
+import 'generated/colors_css.dart' as css;
 
 const String outputFolder = 'resources/colors';
 
@@ -44,11 +45,13 @@ Future<void> exitWith(int code) async {
 void generatePropertiesFiles() {
   generateProperties(material.colors, '$outputFolder/material.properties');
   generateProperties(cupertino.colors, '$outputFolder/cupertino.properties');
+  generateProperties(css.colors, '$outputFolder/css.properties');
 }
 
 void generateJsonFiles() {
   generateJson(material.colors, '$outputFolder/material.json');
   generateJson(cupertino.colors, '$outputFolder/cupertino.json');
+  generateJson(css.colors, '$outputFolder/css.json');
 }
 
 const List<int> validShades = <int>[
