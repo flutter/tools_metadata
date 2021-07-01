@@ -41,9 +41,12 @@ Future<void> generateDartFiles() async {
   final List<String> cssColors = extractColorNames(cssColorsFile);
 
   // generate .properties files
-  generateDart(materialColors, 'material', 'Colors');
-  generateDart(cupertinoColors, 'cupertino', 'CupertinoColors');
-  generateDart(cssColors, 'css', 'CSSColors');
+  generateDart(materialColors, 'material', 'Colors',
+      'package:flutter/src/material/colors.dart');
+  generateDart(cupertinoColors, 'cupertino', 'CupertinoColors',
+      'package:flutter/src/cupertino/colors.dart');
+  generateDart(cssColors, 'css', 'CSSColors',
+      'package:css_colors/css_colors.dart');
 }
 
 // The pattern below is meant to match lines like:
@@ -65,21 +68,19 @@ List<String> extractColorNames(File file) {
   return Set<String>.from(names).toList()..sort();
 }
 
-void generateDart(List<String> colors, String colorType, String className) {
+void generateDart(
+  List<String> colors,
+  String colorType,
+  String className,
+  String baseUri,
+) {
   final StringBuffer buf = StringBuffer();
   buf.writeln('''
 // Generated file - do not edit.
 
 import 'dart:ui';
-''');
 
-  if (colorType == 'css') {
-    buf.writeln("import 'package:css_colors/css_colors.dart';");
-  } else {
-    buf.writeln("import 'package:flutter/src/$colorType/colors.dart';");
-  }
-
-  buf.writeln('''
+import '$baseUri';
 
 final Map<String, Color> colors = <String, Color>{''');
 
