@@ -72,7 +72,7 @@ void generateDart(
   List<String> colors,
   String colorType,
   String className,
-  String baseUri,
+  String importUri,
 ) {
   final StringBuffer buf = StringBuffer();
   buf.writeln('''
@@ -80,7 +80,7 @@ void generateDart(
 
 import 'dart:ui';
 
-import '$baseUri';
+import '$importUri';
 
 final Map<String, Color> colors = <String, Color>{''');
 
