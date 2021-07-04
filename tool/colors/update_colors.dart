@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'dart:io';
+import 'dart:isolate';
 
 import 'package:path/path.dart' as path;
 
@@ -14,6 +15,7 @@ final File materialColorsFile =
     File('$flutterPackageSourcePath/material/colors.dart');
 final File cupertinoColorsFile =
     File('$flutterPackageSourcePath/cupertino/colors.dart');
+File cssColorsFile;
 const String generatedFilesPath = 'tool/colors/generated';
 
 Future<void> main(List<String> args) async {
@@ -28,13 +30,23 @@ Future<void> main(List<String> args) async {
 }
 
 Future<void> generateDartFiles() async {
+  // Get the path to the source file
+  cssColorsFile = File((await Isolate.resolvePackageUri(
+          Uri.parse('package:css_colors/css_colors.dart')))
+      .toFilePath());
+
   // parse into metadata
   final List<String> materialColors = extractColorNames(materialColorsFile);
   final List<String> cupertinoColors = extractColorNames(cupertinoColorsFile);
+  final List<String> cssColors = extractColorNames(cssColorsFile);
 
   // generate .properties files
-  generateDart(materialColors, 'material', 'Colors');
-  generateDart(cupertinoColors, 'cupertino', 'CupertinoColors');
+  generateDart(materialColors, 'material', 'Colors',
+      'package:flutter/src/material/colors.dart');
+  generateDart(cupertinoColors, 'cupertino', 'CupertinoColors',
+      'package:flutter/src/cupertino/colors.dart');
+  generateDart(cssColors, 'css', 'CSSColors',
+      'package:css_colors/css_colors.dart');
 }
 
 // The pattern below is meant to match lines like:
@@ -56,14 +68,19 @@ List<String> extractColorNames(File file) {
   return Set<String>.from(names).toList()..sort();
 }
 
-void generateDart(List<String> colors, String colorType, String className) {
+void generateDart(
+  List<String> colors,
+  String colorType,
+  String className,
+  String importUri,
+) {
   final StringBuffer buf = StringBuffer();
   buf.writeln('''
 // Generated file - do not edit.
 
 import 'dart:ui';
 
-import 'package:flutter/src/$colorType/colors.dart';
+import '$importUri';
 
 final Map<String, Color> colors = <String, Color>{''');
 
