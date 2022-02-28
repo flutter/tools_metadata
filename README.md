@@ -59,7 +59,7 @@ with the [d: tools_metadata][issue] label for all open issues.
 
 ### Regenerating metadata
 
-To re-generate the metadata, run `flutter pub run grind generate` from the
+To re-generate the metadata, run `flutter pub run grinder generate` from the
 command line. That will regenerate the metadata from the version of the flutter
 framework currently in use. Note that we do not want to commit generated
 metadata from versions of the framework from Flutter's master channel; currently
