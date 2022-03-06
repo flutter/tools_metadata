@@ -101,20 +101,21 @@ void generateJson(Map<String, Color> colors, String filename) {
 
 void writeColors(Map<String, Color> colors,
     void Function(String name, Color value) writeColor) {
-  for (final String name in colors.keys) {
-    final Color color = colors[name];
+  for (final MapEntry<String, Color> entry in colors.entries) {
+    final String name = entry.key;
+    final Color color = entry.value;
     if (color is MaterialColor) {
       writeColor('$name.primary', color);
       for (final int shade in validShades) {
         if (color[shade] != null) {
-          writeColor('$name[$shade]', color[shade]);
+          writeColor('$name[$shade]', color[shade]!);
         }
       }
     } else if (color is MaterialAccentColor) {
       writeColor('$name.primary', color);
       for (final int shade in validShades) {
         if (color[shade] != null) {
-          writeColor('$name[$shade]', color[shade]);
+          writeColor('$name[$shade]', color[shade]!);
         }
       }
     } else if (color is CupertinoDynamicColor) {

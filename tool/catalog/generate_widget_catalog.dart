@@ -11,7 +11,7 @@ import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/dart/analysis/session.dart';
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/src/generated/source.dart';
+import 'package:collection/collection.dart';
 import 'package:path/path.dart' as path;
 
 import '../common.dart';
@@ -42,8 +42,8 @@ Future<void> main(List<String> args) async {
   print('Scanning Dart files...');
   final List<String> libraryFiles = <String>[];
   for (final String file in files) {
-    final SourceKind kind = await session.getSourceKind(file);
-    if (kind == SourceKind.LIBRARY) {
+    final FileResult fileResult = session.getFile(file) as FileResult;
+    if (!fileResult.isPart) {
       libraryFiles.add(file);
     }
   }
@@ -51,24 +51,27 @@ Future<void> main(List<String> args) async {
 
   print("Resolving class 'Widget'...");
 
-  final LibraryElement widgetsLibrary = await session
-      .getLibraryByUri('package:flutter/src/widgets/framework.dart');
+  final LibraryElementResult widgetsLibraryResult = await session
+          .getLibraryByUri('package:flutter/src/widgets/framework.dart')
+      as LibraryElementResult;
+  final LibraryElement widgetsLibrary = widgetsLibraryResult.element;
 
-  final ClassElement widgetClass = widgetsLibrary.getType('Widget');
+  final ClassElement widgetClass =
+      widgetsLibrary.getType('Widget') as ClassElement;
 
   print('Resolving widget subclasses...');
   final List<ClassElement> classes = <ClassElement>[];
   for (final String file in libraryFiles) {
     final ResolvedLibraryResult resolvedLibraryResult =
-        await session.getResolvedLibrary(file);
+        await session.getResolvedLibrary(file) as ResolvedLibraryResult;
 
     final LibraryElement lib = resolvedLibraryResult.element;
     for (final Element element in lib.topLevelElements) {
-      if (element is! ClassElement) {
+      if (element is! ClassElement || element.isMixin) {
         continue;
       }
 
-      final ClassElement clazz = element as ClassElement;
+      final ClassElement clazz = element;
       if (clazz.allSupertypes.contains(widgetClass.thisType)) {
         // Hide private classes.
         final String name = clazz.name;
@@ -115,33 +118,31 @@ Map<String, Object> _convertToJson(
   final String filePath = classElement.library.librarySource.uri.path;
   final String libraryName = filePath.split('/')[2];
 
-  String summary;
-  final ElementAnnotation summaryAnnotation =
-      _getAnnotations(classElement, 'Summary')
-          .firstWhere((_) => true, orElse: () => null);
+  String? summary;
+  final ElementAnnotation? summaryAnnotation =
+      _getAnnotations(classElement, 'Summary').firstOrNull;
   if (summaryAnnotation != null) {
     final DartObject text =
-        summaryAnnotation.computeConstantValue().getField('text');
-    summary = text.toStringValue().trim();
+        summaryAnnotation.computeConstantValue()!.getField('text')!;
+    summary = text.toStringValue()!.trim();
   }
 
-  List<String> categories;
-  final ElementAnnotation categoryAnnotation =
-      _getAnnotations(classElement, 'Category')
-          .firstWhere((_) => true, orElse: () => null);
+  List<String>? categories;
+  final ElementAnnotation? categoryAnnotation =
+      _getAnnotations(classElement, 'Category').firstOrNull;
   if (categoryAnnotation != null) {
     final DartObject value =
-        categoryAnnotation.computeConstantValue().getField('sections');
+        categoryAnnotation.computeConstantValue()!.getField('sections')!;
     categories = value
-        .toListValue()
-        .map((DartObject obj) => obj.toStringValue())
+        .toListValue()!
+        .map((DartObject obj) => obj.toStringValue()!)
         .toList();
   }
 
   final Map<String, Object> m = <String, Object>{};
   m['name'] = classElement.name;
   if (classElement != widgetClass) {
-    m['parent'] = classElement.supertype.element.name;
+    m['parent'] = classElement.supertype!.element.name;
   }
   m['library'] = libraryName;
   if (classElement.isAbstract) {
@@ -158,14 +159,14 @@ Map<String, Object> _convertToJson(
 List<ElementAnnotation> _getAnnotations(ClassElement c, String name) {
   return c.metadata.where((ElementAnnotation a) {
     if (a.element is ConstructorElement) {
-      return a.element.enclosingElement.name == name;
+      return a.element?.enclosingElement?.name == name;
     } else {
       return false;
     }
   }).toList();
 }
 
-String _singleLine(String docs) {
+String _singleLine(String? docs) {
   if (docs == null) {
     return '';
   }
@@ -175,7 +176,9 @@ String _singleLine(String docs) {
       .map((String line) {
         return line.startsWith('/// ')
             ? line.substring(4)
-            : line == '///' ? '' : line;
+            : line == '///'
+                ? ''
+                : line;
       })
       .map((String line) => line.trimRight())
       .takeWhile((String line) => line.isNotEmpty)

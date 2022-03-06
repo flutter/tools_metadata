@@ -59,7 +59,7 @@ final RegExp regexp =
 
 List<Icon> parseIconData(String data) {
   return regexp.allMatches(data).map((Match match) {
-    return Icon(match.group(1), int.parse(match.group(2), radix: 16));
+    return Icon(match.group(1)!, int.parse(match.group(2)!, radix: 16));
   }).toList();
 }
 
