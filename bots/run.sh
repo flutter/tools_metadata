@@ -14,6 +14,9 @@ flutter doctor -v
 
 echo "Fetching dependencies..."
 flutter pub get
+pushd tool/icon_generator
+flutter pub get
+popd
 
 echo "Analyzing project"
 flutter analyze

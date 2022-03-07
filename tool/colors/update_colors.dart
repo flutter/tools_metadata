@@ -15,7 +15,6 @@ final File materialColorsFile =
     File('$flutterPackageSourcePath/material/colors.dart');
 final File cupertinoColorsFile =
     File('$flutterPackageSourcePath/cupertino/colors.dart');
-File cssColorsFile;
 const String generatedFilesPath = 'tool/colors/generated';
 
 Future<void> main(List<String> args) async {
@@ -31,9 +30,9 @@ Future<void> main(List<String> args) async {
 
 Future<void> generateDartFiles() async {
   // Get the path to the source file
-  cssColorsFile = File((await Isolate.resolvePackageUri(
-          Uri.parse('package:css_colors/css_colors.dart')))
-      .toFilePath());
+  final cssColorsPackageUri = await Isolate.resolvePackageUri(
+      Uri.parse('package:css_colors/css_colors.dart'));
+  final cssColorsFile = File(cssColorsPackageUri!.toFilePath());
 
   // parse into metadata
   final List<String> materialColors = extractColorNames(materialColorsFile);
@@ -45,8 +44,8 @@ Future<void> generateDartFiles() async {
       'package:flutter/src/material/colors.dart');
   generateDart(cupertinoColors, 'cupertino', 'CupertinoColors',
       'package:flutter/src/cupertino/colors.dart');
-  generateDart(cssColors, 'css', 'CSSColors',
-      'package:css_colors/css_colors.dart');
+  generateDart(
+      cssColors, 'css', 'CSSColors', 'package:css_colors/css_colors.dart');
 }
 
 // The pattern below is meant to match lines like:
@@ -61,7 +60,7 @@ List<String> extractColorNames(File file) {
 
   final List<String> names = regexpColor
       .allMatches(data)
-      .map((Match match) => match.group(1))
+      .map((Match match) => match.group(1)!)
       .toList();
 
   // Remove any duplicates.
