@@ -126,11 +126,13 @@ Future<void> generateIcons(String appFolder) async {
   // Errors in the Flutter app will not set the exit code, so we need to
   // watch stdout/stderr for errors.
   bool hasError = false;
+  final errorText = StringBuffer();
   proc.stdout
       .transform(utf8.decoder)
       .transform(const LineSplitter())
       .listen((String line) {
     if (line.contains('ERROR:')) {
+      errorText.writeln(line);
       hasError = true;
     }
     stdout.writeln(line);
@@ -140,12 +142,13 @@ Future<void> generateIcons(String appFolder) async {
       .transform(const LineSplitter())
       .listen((String line) {
     hasError = true;
+    errorText.writeln(line);
     stderr.writeln(line);
   });
 
   final int exitCode = await proc.exitCode;
-  if (exitCode != 0 || hasError) {
-    throw 'Process exited with error ($exitCode)';
+  if ((exitCode != 0 || hasError)) {
+    throw 'Process exited with error ($exitCode): $errorText';
   }
 }
 
