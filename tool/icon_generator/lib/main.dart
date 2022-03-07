@@ -150,7 +150,8 @@ Future findAndSave(Key key, String path, {bool small: true}) async {
   Future<ui.Image> imageFuture = _captureImage(element);
 
   final ui.Image image = await imageFuture;
-  final ByteData bytes = await image.toByteData(format: ui.ImageByteFormat.png);
+  final ByteData bytes =
+      (await image.toByteData(format: ui.ImageByteFormat.png))!;
 
   await new File(path).writeAsBytes(bytes.buffer.asUint8List());
 
@@ -158,15 +159,13 @@ Future findAndSave(Key key, String path, {bool small: true}) async {
 }
 
 Future<ui.Image> _captureImage(Element element) {
-  RenderObject renderObject = element.renderObject;
+  // Copied from package:flutter_test/src/_matchers_io.dart.
+  assert(element.renderObject != null);
+  RenderObject renderObject = element.renderObject!;
   while (!renderObject.isRepaintBoundary) {
-    renderObject = renderObject.parent;
-    assert(renderObject != null);
+    renderObject = renderObject.parent! as RenderObject;
   }
-
   assert(!renderObject.debugNeedsPaint);
-
-  // ignore: invalid_use_of_protected_member
-  final OffsetLayer layer = renderObject.layer;
+  final OffsetLayer layer = renderObject.debugLayer! as OffsetLayer;
   return layer.toImage(renderObject.paintBounds);
 }

@@ -1,16 +1,17 @@
 name: tool_metadata
 
 environment:
-  sdk: ">=2.8.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  analyzer: ^0.40.0
+  analyzer: ^3.3.1
   args: any
+  collection:
   css_colors: ^1.1.1
   flutter:
     sdk: flutter
-  path: ^1.7.0
+  path: ^1.8.1
 
 dev_dependencies:
-  grinder: ^0.8.0
-  lints: ^1.0.0
+  grinder: ^0.9.0
+  lints: ^1.0.1

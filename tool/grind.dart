@@ -36,7 +36,7 @@ Future<void> catalog() async {
 Future<void> version() async {
   final Map<String, String> versionInfo = calculateFlutterVersion();
 
-  final String actualChannel = versionInfo['channel'];
+  final String actualChannel = versionInfo['channel']!;
   if (actualChannel != flutterBranch) {
     throw 'You are currently using the Flutter $actualChannel channel, please '
         'generate these files using the $flutterBranch channel.';
@@ -45,7 +45,7 @@ Future<void> version() async {
   // Avoid generating needless diffs by mapping SSH clones onto the HTTPS URL.
   // - git@github.com:flutter/flutter.git (SSH)
   // - https://github.com/flutter/flutter (HTTPS)
-  versionInfo['repositoryUrl'] = versionInfo['repositoryUrl']
+  versionInfo['repositoryUrl'] = versionInfo['repositoryUrl']!
       .replaceAll('git@github.com:', 'https://github.com/')
       .replaceAll(RegExp(r'.git$'), '');
 
