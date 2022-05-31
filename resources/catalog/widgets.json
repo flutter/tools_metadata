@@ -1,6 +1,6 @@
 {
   "flutter": {
-    "version": "2.11.0-0.1.pre",
+    "version": "3.1.0",
     "channel": "beta"
   },
   "widgets": [
@@ -783,12 +783,6 @@
       "description": "A Material-style date range picker dialog."
     },
     {
-      "name": "DayPicker",
-      "parent": "StatelessWidget",
-      "library": "material",
-      "description": "Displays the days of a given month and allows choosing a day."
-    },
-    {
       "name": "DecoratedBox",
       "parent": "SingleChildRenderObjectWidget",
       "library": "widgets",
@@ -805,6 +799,12 @@
       "parent": "InheritedWidget",
       "library": "widgets",
       "description": "A widget that determines the default asset bundle for its descendants."
+    },
+    {
+      "name": "DefaultSelectionStyle",
+      "parent": "InheritedTheme",
+      "library": "widgets",
+      "description": "The selection style to apply to descendant [EditableText] widgets which don't have an explicit style."
     },
     {
       "name": "DefaultTabController",
@@ -853,6 +853,12 @@
       "parent": "StatefulWidget",
       "library": "widgets",
       "description": "A widget that can be dismissed by dragging in the indicated [direction]."
+    },
+    {
+      "name": "DisplayFeatureSubScreen",
+      "parent": "StatelessWidget",
+      "library": "widgets",
+      "description": "Positions [child] such that it avoids overlapping any [DisplayFeature] that splits the screen into sub-screens."
     },
     {
       "name": "Divider",
@@ -1011,6 +1017,12 @@
       "description": "A single-line [ListTile] with an expansion arrow icon that expands or collapses the tile to reveal or hide the [children]."
     },
     {
+      "name": "ExpansionTileTheme",
+      "parent": "InheritedTheme",
+      "library": "material",
+      "description": "Overrides the default [ExpansionTileTheme] of its [ExpansionTile] descendants."
+    },
+    {
       "name": "FadeInImage",
       "parent": "StatefulWidget",
       "library": "widgets",
@@ -1033,12 +1045,6 @@
       "parent": "SingleChildRenderObjectWidget",
       "library": "widgets",
       "description": "Scales and positions its child within itself according to [fit]."
-    },
-    {
-      "name": "FlatButton",
-      "parent": "MaterialButton",
-      "library": "material",
-      "description": "A Material Design \"flat button\"."
     },
     {
       "name": "Flex",
@@ -1527,12 +1533,6 @@
       "description": "A widget that prevents the user from interacting with widgets behind itself."
     },
     {
-      "name": "MonthPicker",
-      "parent": "StatefulWidget",
-      "library": "material",
-      "description": "A scrollable list of months to allow picking a month."
-    },
-    {
       "name": "MouseRegion",
       "parent": "SingleChildRenderObjectWidget",
       "library": "widgets",
@@ -1607,7 +1607,7 @@
     },
     {
       "name": "NotificationListener",
-      "parent": "StatelessWidget",
+      "parent": "ProxyWidget",
       "library": "widgets",
       "description": "A widget that listens for [Notification]s bubbling up the tree."
     },
@@ -1635,12 +1635,6 @@
       "parent": "StatelessWidget",
       "library": "widgets",
       "description": "Builds a widget tree that can depend on the parent widget's orientation (distinct from the device orientation)."
-    },
-    {
-      "name": "OutlineButton",
-      "parent": "MaterialButton",
-      "library": "material",
-      "description": "Similar to a [FlatButton] with a thin grey rounded rectangle border."
     },
     {
       "name": "OutlinedButton",
@@ -1726,6 +1720,12 @@
       "parent": "StatelessWidget",
       "library": "widgets",
       "description": "A widget that draws a box that represents where other widgets will one day be added."
+    },
+    {
+      "name": "PlatformMenuBar",
+      "parent": "StatefulWidget",
+      "library": "widgets",
+      "description": "A menu bar that uses the platform's native APIs to construct and render a menu described by a [PlatformMenu]/[PlatformMenuItem] hierarchy."
     },
     {
       "name": "PlatformViewLink",
@@ -1844,12 +1844,6 @@
       "parent": "InheritedWidget",
       "library": "material",
       "description": "Applies a radio theme to descendant [Radio] widgets."
-    },
-    {
-      "name": "RaisedButton",
-      "parent": "MaterialButton",
-      "library": "material",
-      "description": "A Material Design \"raised button\"."
     },
     {
       "name": "RangeSlider",
