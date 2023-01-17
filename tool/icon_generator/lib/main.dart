@@ -141,7 +141,7 @@ class MyIconApp extends StatelessWidget {
   }
 }
 
-Future findAndSave(Key key, String path, {bool small: true}) async {
+Future findAndSave(Key key, String path, {bool small = true}) async {
   Finder finder = find.byKey(key);
 
   final Iterable<Element> elements = finder.evaluate();
