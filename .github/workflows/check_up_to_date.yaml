@@ -1,0 +1,13 @@
+name: Check resources up-to-date
+
+on:
+  schedule:
+    # 10am, 1st of every month
+    - cron: '0 10 1 * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: ./bots/check_up_to_date.sh
