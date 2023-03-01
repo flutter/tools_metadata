@@ -1,3 +1,6 @@
+[![Build](https://github.com/flutter/tools_metadata/actions/workflows/build.yaml/badge.svg)](https://github.com/flutter/tools_metadata/actions/workflows/build.yaml)
+[![Check resources up-to-date](https://github.com/flutter/tools_metadata/actions/workflows/check_up_to_date.yaml/badge.svg)](https://github.com/flutter/tools_metadata/actions/workflows/check_up_to_date.yaml)
+
 ## What's this?
 
 This repo holds generated metadata about the Flutter framework.
