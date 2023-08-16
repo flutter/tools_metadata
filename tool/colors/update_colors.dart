@@ -19,7 +19,9 @@ const String generatedFilesPath = 'tool/colors/generated';
 
 Future<void> main(List<String> args) async {
   // Verify that we're running from the project root.
-  if (path.basename(Directory.current.path) != 'tools_metadata') {
+  if (!File(path.join(Directory.current.path, 'pubspec.yaml'))
+      .readAsStringSync()
+      .startsWith('name: tool_metadata')) {
     print('Please run this script from the directory root.');
     exit(1);
   }

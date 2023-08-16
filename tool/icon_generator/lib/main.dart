@@ -20,7 +20,9 @@ final String resourcesFolder = path.join(toolsRoot, 'resources/icons');
 
 Future main() async {
   // Verify that we're running from the project root.
-  if (path.basename(toolsRoot) != 'tools_metadata') {
+  if (File(path.join(Directory.current.path, 'pubspec.yaml'))
+      .readAsStringSync()
+      .startsWith('name: tool_metadata')) {
     print('Script must be run from tool/icon_generator');
     exit(1);
   }
