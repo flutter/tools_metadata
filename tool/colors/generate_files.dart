@@ -43,15 +43,24 @@ Future<void> exitWith(int code) async {
 }
 
 void generatePropertiesFiles() {
-  generateProperties(material.colors, '$outputFolder/material.properties');
-  generateProperties(cupertino.colors, '$outputFolder/cupertino.properties');
-  generateProperties(css.colors, '$outputFolder/css.properties');
+  generateProperties(
+    material.colors,
+    path.join(outputFolder, 'material.properties'),
+  );
+  generateProperties(
+    cupertino.colors,
+    path.join(outputFolder, 'cupertino.properties'),
+  );
+  generateProperties(
+    css.colors,
+    path.join(outputFolder, 'css.properties'),
+  );
 }
 
 void generateJsonFiles() {
-  generateJson(material.colors, '$outputFolder/material.json');
-  generateJson(cupertino.colors, '$outputFolder/cupertino.json');
-  generateJson(css.colors, '$outputFolder/css.json');
+  generateJson(material.colors, path.join(outputFolder, 'material.json'));
+  generateJson(cupertino.colors, path.join(outputFolder, 'cupertino.json'));
+  generateJson(css.colors, path.join(outputFolder, 'css.json'));
 }
 
 const List<int> validShades = <int>[

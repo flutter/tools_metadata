@@ -89,7 +89,9 @@ final Map<String, Color> colors = <String, Color>{''');
 
   buf.writeln('};');
 
-  final File out = File('$generatedFilesPath/colors_$colorType.dart');
+  final File out = File(
+    path.join(generatedFilesPath, 'colors_$colorType.dart'),
+  );
   out.writeAsStringSync(buf.toString());
 
   print('wrote ${out.path}');

@@ -37,20 +37,28 @@ Future main() async {
 
   for (material.IconTuple icon in material.icons) {
     await findAndSave(
-        icon.smallKey, '$resourcesFolder/material/${icon.name}.png',
-        small: true);
+      icon.smallKey,
+      path.join(resourcesFolder, 'material','${icon.name}.png'),
+      small: true,
+    );
     await findAndSave(
-        icon.largeKey, '$resourcesFolder/material/${icon.name}@2x.png',
-        small: false);
+      icon.largeKey,
+      path.join(resourcesFolder, 'material','${icon.name}@2x.png'),
+      small: false,
+    );
   }
 
   for (cupertino.IconTuple icon in cupertino.icons) {
     await findAndSave(
-        icon.smallKey, '$resourcesFolder/cupertino/${icon.name}.png',
-        small: true);
+      icon.smallKey,
+      path.join(resourcesFolder, 'cupertino','${icon.name}.png'),
+      small: true,
+    );
     await findAndSave(
-        icon.largeKey, '$resourcesFolder/cupertino/${icon.name}@2x.png',
-        small: false);
+      icon.largeKey,
+      path.join(resourcesFolder, 'cupertino','${icon.name}@2x.png'),
+      small: false,
+    );
   }
 
   print('Finished generating icons, quitting...');
@@ -163,7 +171,7 @@ Future<ui.Image> _captureImage(Element element) {
   assert(element.renderObject != null);
   RenderObject renderObject = element.renderObject!;
   while (!renderObject.isRepaintBoundary) {
-    renderObject = renderObject.parent! as RenderObject;
+    renderObject = renderObject.parent!;
   }
   assert(!renderObject.debugNeedsPaint);
   final OffsetLayer layer = renderObject.debugLayer! as OffsetLayer;
