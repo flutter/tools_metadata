@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as path;
+import 'package:yaml/yaml.dart';
 
 import 'cupertino.dart' as cupertino;
 import 'material.dart' as material;
@@ -20,7 +21,7 @@ final String resourcesFolder = path.join(toolsRoot, 'resources/icons');
 
 Future main() async {
   // Verify that we're running from the project root.
-  if (path.basename(toolsRoot) != 'tools_metadata') {
+  if (!await _fromTheProjectRoot(toolsRoot)) {
     print('Script must be run from tool/icon_generator');
     exit(1);
   }
@@ -37,20 +38,28 @@ Future main() async {
 
   for (material.IconTuple icon in material.icons) {
     await findAndSave(
-        icon.smallKey, '$resourcesFolder/material/${icon.name}.png',
-        small: true);
+      icon.smallKey,
+      path.join(resourcesFolder, 'material', '${icon.name}.png'),
+      small: true,
+    );
     await findAndSave(
-        icon.largeKey, '$resourcesFolder/material/${icon.name}@2x.png',
-        small: false);
+      icon.largeKey,
+      path.join(resourcesFolder, 'material', '${icon.name}@2x.png'),
+      small: false,
+    );
   }
 
   for (cupertino.IconTuple icon in cupertino.icons) {
     await findAndSave(
-        icon.smallKey, '$resourcesFolder/cupertino/${icon.name}.png',
-        small: true);
+      icon.smallKey,
+      path.join(resourcesFolder, 'cupertino', '${icon.name}.png'),
+      small: true,
+    );
     await findAndSave(
-        icon.largeKey, '$resourcesFolder/cupertino/${icon.name}@2x.png',
-        small: false);
+      icon.largeKey,
+      path.join(resourcesFolder, 'cupertino', '${icon.name}@2x.png'),
+      small: false,
+    );
   }
 
   print('Finished generating icons, quitting...');
@@ -163,9 +172,21 @@ Future<ui.Image> _captureImage(Element element) {
   assert(element.renderObject != null);
   RenderObject renderObject = element.renderObject!;
   while (!renderObject.isRepaintBoundary) {
-    renderObject = renderObject.parent! as RenderObject;
+    renderObject = renderObject.parent!;
   }
   assert(!renderObject.debugNeedsPaint);
   final OffsetLayer layer = renderObject.debugLayer! as OffsetLayer;
   return layer.toImage(renderObject.paintBounds);
+}
+
+/// Determine whether the environment is based from the project root
+/// by validate the name of the pubspec if it exists.
+Future<bool> _fromTheProjectRoot(String rootPath) async {
+  final yamlPath = path.join(rootPath, 'pubspec.yaml');
+  if (!File(yamlPath).existsSync()) {
+    return false;
+  }
+  final yamlMap =
+      (await loadYaml(await File(yamlPath).readAsString()) as YamlMap);
+  return yamlMap['name'] == 'tool_metadata';
 }

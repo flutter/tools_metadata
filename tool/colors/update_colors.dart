@@ -19,7 +19,7 @@ const String generatedFilesPath = 'tool/colors/generated';
 
 Future<void> main(List<String> args) async {
   // Verify that we're running from the project root.
-  if (path.basename(Directory.current.path) != 'tools_metadata') {
+  if (!await fromTheProjectRoot()) {
     print('Please run this script from the directory root.');
     exit(1);
   }
@@ -89,7 +89,9 @@ final Map<String, Color> colors = <String, Color>{''');
 
   buf.writeln('};');
 
-  final File out = File('$generatedFilesPath/colors_$colorType.dart');
+  final File out = File(
+    path.join(generatedFilesPath, 'colors_$colorType.dart'),
+  );
   out.writeAsStringSync(buf.toString());
 
   print('wrote ${out.path}');

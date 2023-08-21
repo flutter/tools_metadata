@@ -5,6 +5,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:path/path.dart' as path;
+
 import '../common.dart';
 
 const String outputFolder = 'resources/icons';
@@ -26,18 +28,32 @@ Future<void> main() async {
 
   // generate .properties files
   generateProperties(
-      materialIcons, '$outputFolder/material.properties', 'material');
+    materialIcons,
+    path.join(outputFolder, 'material.properties'),
+    'material',
+  );
   generateProperties(
-      cupertinoIcons, '$outputFolder/cupertino.properties', 'cupertino');
+    cupertinoIcons,
+    path.join(outputFolder, 'cupertino.properties'),
+    'cupertino',
+  );
 
   // generate dart code
-  generateDart(materialIcons, 'tool/icon_generator/lib/material.dart', 'Icons',
-      'material');
-  generateDart(cupertinoIcons, 'tool/icon_generator/lib/cupertino.dart',
-      'CupertinoIcons', 'cupertino');
+  generateDart(
+    materialIcons,
+    path.join('tool', 'icon_generator', 'lib', 'material.dart'),
+    'Icons',
+    'material',
+  );
+  generateDart(
+    cupertinoIcons,
+    path.join('tool', 'icon_generator', 'lib', 'cupertino.dart'),
+    'CupertinoIcons',
+    'cupertino',
+  );
 
   // generate the icons using the flutter app
-  await generateIcons('tool/icon_generator');
+  await generateIcons(path.join('tool', 'icon_generator'));
 }
 
 Future<String> downloadUrl(String url) async {
@@ -121,8 +137,10 @@ final List<IconTuple> icons = [''');
 
 Future<void> generateIcons(String appFolder) async {
   final Process proc = await Process.start(
-      'flutter', <String>['run', '-d', 'flutter-tester'],
-      workingDirectory: appFolder);
+    flutterPath,
+    <String>['run', '-d', 'flutter-tester'],
+    workingDirectory: appFolder,
+  );
   // Errors in the Flutter app will not set the exit code, so we need to
   // watch stdout/stderr for errors.
   bool hasError = false;
