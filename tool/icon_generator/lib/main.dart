@@ -15,9 +15,10 @@ import 'package:yaml/yaml.dart';
 import 'cupertino.dart' as cupertino;
 import 'material.dart' as material;
 
-final String toolsRoot =
-    path.normalize(path.join(Directory.current.path, '../..'));
-final String resourcesFolder = path.join(toolsRoot, 'resources/icons');
+final String toolsRoot = path.normalize(
+  path.join(Directory.current.path, '../..'),
+);
+final String resourcesFolder = path.join(toolsRoot, 'resources', 'icons');
 
 Future main() async {
   // Verify that we're running from the project root.
