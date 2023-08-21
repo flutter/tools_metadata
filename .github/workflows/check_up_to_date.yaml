@@ -4,6 +4,7 @@ on:
   schedule:
     # 10am, 1st of every month
     - cron: '0 10 1 * *'
+  workflow_dispatch:
 
 jobs:
   build:
