@@ -13,7 +13,7 @@ import 'generated/colors_cupertino.dart' as cupertino;
 import 'generated/colors_material.dart' as material;
 import 'generated/colors_css.dart' as css;
 
-const String outputFolder = 'resources/colors';
+final String outputFolder = path.join('resources', 'colors');
 
 Future<void> main(List<String> args) async {
   // Verify that we're running from the project root.
@@ -43,15 +43,15 @@ Future<void> exitWith(int code) async {
 }
 
 void generatePropertiesFiles() {
-  generateProperties(material.colors, '$outputFolder/material.properties');
-  generateProperties(cupertino.colors, '$outputFolder/cupertino.properties');
-  generateProperties(css.colors, '$outputFolder/css.properties');
+  generateProperties(material.colors, 'material.properties');
+  generateProperties(cupertino.colors, 'cupertino.properties');
+  generateProperties(css.colors, 'css.properties');
 }
 
 void generateJsonFiles() {
-  generateJson(material.colors, '$outputFolder/material.json');
-  generateJson(cupertino.colors, '$outputFolder/cupertino.json');
-  generateJson(css.colors, '$outputFolder/css.json');
+  generateJson(material.colors, 'material.json');
+  generateJson(cupertino.colors, 'cupertino.json');
+  generateJson(css.colors, 'css.json');
 }
 
 const List<int> validShades = <int>[
@@ -79,9 +79,10 @@ void generateProperties(Map<String, Color> colors, String filename) {
   writeColors(colors,
       (String name, Color color) => buf.writeln('$name=${color.toHex()}'));
 
-  File(filename).writeAsStringSync(buf.toString());
+  final dest = path.join(outputFolder, filename);
+  File(dest).writeAsStringSync(buf.toString());
 
-  print('wrote $filename');
+  print('wrote $dest');
 }
 
 void generateJson(Map<String, Color> colors, String filename) {
@@ -94,9 +95,10 @@ void generateJson(Map<String, Color> colors, String filename) {
   buf.writeln(lines.join(',\n'));
   buf.writeln('}');
 
-  File(filename).writeAsStringSync(buf.toString());
+  final dest = path.join(outputFolder, filename);
+  File(dest).writeAsStringSync(buf.toString());
 
-  print('wrote $filename');
+  print('wrote $dest');
 }
 
 void writeColors(Map<String, Color> colors,

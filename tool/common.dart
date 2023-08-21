@@ -6,14 +6,21 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:path/path.dart' as path;
+import 'package:yaml/yaml.dart';
 
 const String flutterBranch = 'beta';
 
 final String flutterSdkPath = _getFlutterSdkPath();
 
+final String flutterPath = path.join(
+  flutterSdkPath,
+  path.join('bin', Platform.isWindows ? 'flutter.bat' : 'flutter'),
+);
+
 String _getFlutterSdkPath() {
   // This depends on the dart SDK being in <flutter-sdk>/bin/cache/dart-sdk/bin.
-  if (!Platform.resolvedExecutable.contains('bin/cache/dart-sdk')) {
+  if (!Platform.resolvedExecutable
+      .contains(path.join('bin', 'cache', 'dart-sdk'))) {
     throw 'Please run this script from the version of dart in the Flutter SDK.';
   }
 
@@ -22,9 +29,10 @@ String _getFlutterSdkPath() {
 }
 
 Map<String, String> calculateFlutterVersion() {
-  final String flutterPath = path.join(flutterSdkPath, 'bin/flutter');
-  final ProcessResult result =
-      Process.runSync(flutterPath, <String>['--version', '--machine']);
+  final ProcessResult result = Process.runSync(
+    flutterPath,
+    <String>['--version', '--machine'],
+  );
   if (result.exitCode != 0) {
     throw 'Error from flutter --version';
   }
@@ -35,7 +43,9 @@ Map<String, String> calculateFlutterVersion() {
 
 Future<void> flutterRun(String script) async {
   final Process proc = await Process.start(
-      'flutter', <String>['run', '-d', 'flutter-tester', '-t', script]);
+    flutterPath,
+    <String>['run', '-d', 'flutter-tester', '-t', script],
+  );
   proc.stdout
       .transform(utf8.decoder)
       .transform(const LineSplitter())
@@ -48,4 +58,19 @@ Future<void> flutterRun(String script) async {
   if (exitCode != 0) {
     throw 'Process exited with code $exitCode';
   }
+}
+
+/// Determine whether the environment is based from the project root
+/// by validate the name of the pubspec if it exists.
+Future<bool> fromTheProjectRoot([String? rootPath]) async {
+  final yamlPath = path.join(
+    rootPath ?? Directory.current.path,
+    'pubspec.yaml',
+  );
+  if (!File(yamlPath).existsSync()) {
+    return false;
+  }
+  final yamlMap =
+      (await loadYaml(await File(yamlPath).readAsString()) as YamlMap);
+  return yamlMap['name'] == 'tool_metadata';
 }
