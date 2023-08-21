@@ -158,6 +158,13 @@ Future<void> generateIcons(String appFolder) async {
       .transform(utf8.decoder)
       .transform(const LineSplitter())
       .listen((String line) {
+    // Uncomment following condition if you have custom PUB_HOSTED_URL set in your env.
+    // if (RegExp(
+    //   r'Flutter assets will be downloaded from https?://.+. '
+    //   r'Make sure you trust this source!',
+    // ).hasMatch(line)) {
+    //   return;
+    // }
     hasError = true;
     errorText.writeln(line);
     stderr.writeln(line);
