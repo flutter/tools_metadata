@@ -118,7 +118,7 @@ Map<String, Object> _convertToJson(
 ) {
   // flutter/src/material/about.dart
   final String filePath = classElement.library.librarySource.uri.path;
-  final String libraryName = filePath.split(path.separator)[2];
+  final String libraryName = filePath.split('/')[2];
 
   String? summary;
   final ElementAnnotation? summaryAnnotation =
