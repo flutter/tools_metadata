@@ -10,12 +10,12 @@ import 'package:path/path.dart' as path;
 import '../common.dart';
 
 final String flutterPackageSourcePath =
-    '$flutterSdkPath/packages/flutter/lib/src';
+    path.join(flutterSdkPath, 'packages', 'flutter', 'lib', 'src');
 final File materialColorsFile =
-    File('$flutterPackageSourcePath/material/colors.dart');
+    File(path.join(flutterPackageSourcePath, 'material', 'colors.dart'));
 final File cupertinoColorsFile =
-    File('$flutterPackageSourcePath/cupertino/colors.dart');
-const String generatedFilesPath = 'tool/colors/generated';
+    File(path.join(flutterPackageSourcePath, 'cupertino', 'colors.dart'));
+final String generatedFilesPath = path.join('tool', 'colors', 'generated');
 
 Future<void> main(List<String> args) async {
   // Verify that we're running from the project root.

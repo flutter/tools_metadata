@@ -13,12 +13,28 @@ final String outputFolder = path.join('resources', 'icons');
 final String iconGeneratorLib = path.join('tool', 'icon_generator', 'lib');
 
 Future<void> main() async {
-  final String materialData =
-      File('$flutterSdkPath/packages/flutter/lib/src/material/icons.dart')
-          .readAsStringSync();
-  final String cupertinoData =
-      File('$flutterSdkPath/packages/flutter/lib/src/cupertino/icons.dart')
-          .readAsStringSync();
+  final String materialData = File(
+    path.join(
+      flutterSdkPath,
+      'packages',
+      'flutter',
+      'lib',
+      'src',
+      'material',
+      'icons.dart',
+    ),
+  ).readAsStringSync();
+  final String cupertinoData = File(
+    path.join(
+      flutterSdkPath,
+      'packages',
+      'flutter',
+      'lib',
+      'src',
+      'cupertino',
+      'icons.dart',
+    ),
+  ).readAsStringSync();
 
   // parse into metadata
   final List<Icon> materialIcons = parseIconData(materialData);
