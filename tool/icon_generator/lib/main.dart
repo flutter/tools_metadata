@@ -11,6 +11,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as path;
 
+import 'common.dart' show fromTheProjectRoot;
 import 'cupertino.dart' as cupertino;
 import 'material.dart' as material;
 
@@ -20,9 +21,7 @@ final String resourcesFolder = path.join(toolsRoot, 'resources/icons');
 
 Future main() async {
   // Verify that we're running from the project root.
-  if (File(path.join(Directory.current.path, 'pubspec.yaml'))
-      .readAsStringSync()
-      .startsWith('name: tool_metadata')) {
+  if (!await fromTheProjectRoot(toolsRoot)) {
     print('Script must be run from tool/icon_generator');
     exit(1);
   }
@@ -40,12 +39,12 @@ Future main() async {
   for (material.IconTuple icon in material.icons) {
     await findAndSave(
       icon.smallKey,
-      path.join(resourcesFolder, 'material','${icon.name}.png'),
+      path.join(resourcesFolder, 'material', '${icon.name}.png'),
       small: true,
     );
     await findAndSave(
       icon.largeKey,
-      path.join(resourcesFolder, 'material','${icon.name}@2x.png'),
+      path.join(resourcesFolder, 'material', '${icon.name}@2x.png'),
       small: false,
     );
   }
@@ -53,12 +52,12 @@ Future main() async {
   for (cupertino.IconTuple icon in cupertino.icons) {
     await findAndSave(
       icon.smallKey,
-      path.join(resourcesFolder, 'cupertino','${icon.name}.png'),
+      path.join(resourcesFolder, 'cupertino', '${icon.name}.png'),
       small: true,
     );
     await findAndSave(
       icon.largeKey,
-      path.join(resourcesFolder, 'cupertino','${icon.name}@2x.png'),
+      path.join(resourcesFolder, 'cupertino', '${icon.name}@2x.png'),
       small: false,
     );
   }
