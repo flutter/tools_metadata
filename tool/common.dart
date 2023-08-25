@@ -5,7 +5,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:grinder/grinder.dart';
 import 'package:path/path.dart' as path;
 import 'package:yaml/yaml.dart';
 
@@ -77,6 +76,7 @@ Future<void> checkRunFromTheProjectRoot([String? rootPath]) async {
     result = yamlMap['name'] == 'tool_metadata';
   }
   if (!result) {
-    fail('Please run this tool from the root of the project.');
+    print('Please run this tool from the root of the project.');
+    exit(1);
   }
 }
