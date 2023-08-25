@@ -9,6 +9,7 @@ import 'package:flutter/src/cupertino/colors.dart';
 import 'package:flutter/src/material/colors.dart';
 import 'package:path/path.dart' as path;
 
+import '../common.dart';
 import 'generated/colors_cupertino.dart' as cupertino;
 import 'generated/colors_material.dart' as material;
 import 'generated/colors_css.dart' as css;
@@ -16,11 +17,7 @@ import 'generated/colors_css.dart' as css;
 final String outputFolder = path.join('resources', 'colors');
 
 Future<void> main(List<String> args) async {
-  // Verify that we're running from the project root.
-  if (path.basename(Directory.current.path) != 'tools_metadata') {
-    print('Please run this script from the directory root.');
-    exitWith(1);
-  }
+  await checkRunFromTheProjectRoot();
 
   print('Generating property files:');
   generatePropertiesFiles();

@@ -15,14 +15,15 @@ import 'package:yaml/yaml.dart';
 import 'cupertino.dart' as cupertino;
 import 'material.dart' as material;
 
-final String toolsRoot =
-    path.normalize(path.join(Directory.current.path, '../..'));
-final String resourcesFolder = path.join(toolsRoot, 'resources/icons');
+final String toolsRoot = path.normalize(
+  path.join(Directory.current.path, '../..'),
+);
+final String resourcesFolder = path.join(toolsRoot, 'resources', 'icons');
 
 Future main() async {
   // Verify that we're running from the project root.
   if (!await _fromTheProjectRoot(toolsRoot)) {
-    print('Script must be run from tool/icon_generator');
+    print('Please run this tool from the root of the project.');
     exit(1);
   }
 

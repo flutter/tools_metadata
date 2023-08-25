@@ -9,15 +9,32 @@ import 'package:path/path.dart' as path;
 
 import '../common.dart';
 
-const String outputFolder = 'resources/icons';
+final String outputFolder = path.join('resources', 'icons');
+final String iconGeneratorLib = path.join('tool', 'icon_generator', 'lib');
 
 Future<void> main() async {
-  final String materialData =
-      File('$flutterSdkPath/packages/flutter/lib/src/material/icons.dart')
-          .readAsStringSync();
-  final String cupertinoData =
-      File('$flutterSdkPath/packages/flutter/lib/src/cupertino/icons.dart')
-          .readAsStringSync();
+  final String materialData = File(
+    path.join(
+      flutterSdkPath,
+      'packages',
+      'flutter',
+      'lib',
+      'src',
+      'material',
+      'icons.dart',
+    ),
+  ).readAsStringSync();
+  final String cupertinoData = File(
+    path.join(
+      flutterSdkPath,
+      'packages',
+      'flutter',
+      'lib',
+      'src',
+      'cupertino',
+      'icons.dart',
+    ),
+  ).readAsStringSync();
 
   // parse into metadata
   final List<Icon> materialIcons = parseIconData(materialData);
@@ -27,30 +44,12 @@ Future<void> main() async {
   cupertinoIcons.sort((a, b) => a.name.compareTo(b.name));
 
   // generate .properties files
-  generateProperties(
-    materialIcons,
-    path.join(outputFolder, 'material.properties'),
-    'material',
-  );
-  generateProperties(
-    cupertinoIcons,
-    path.join(outputFolder, 'cupertino.properties'),
-    'cupertino',
-  );
+  generateProperties(materialIcons, 'material.properties', 'material');
+  generateProperties(cupertinoIcons, 'cupertino.properties', 'cupertino');
 
   // generate dart code
-  generateDart(
-    materialIcons,
-    path.join('tool', 'icon_generator', 'lib', 'material.dart'),
-    'Icons',
-    'material',
-  );
-  generateDart(
-    cupertinoIcons,
-    path.join('tool', 'icon_generator', 'lib', 'cupertino.dart'),
-    'CupertinoIcons',
-    'cupertino',
-  );
+  generateDart(materialIcons, 'material.dart', 'Icons', 'material');
+  generateDart(cupertinoIcons, 'cupertino.dart', 'CupertinoIcons', 'cupertino');
 
   // generate the icons using the flutter app
   await generateIcons(path.join('tool', 'icon_generator'));
@@ -100,9 +99,9 @@ void generateProperties(List<Icon> icons, String filename, String pathSegment) {
     set.add(icon.codepoint);
   }
 
-  File(filename).writeAsStringSync(buf.toString());
-
-  print('wrote $filename');
+  final dest = path.join(outputFolder, filename);
+  File(dest).writeAsStringSync(buf.toString());
+  print('wrote $dest');
 }
 
 void generateDart(
@@ -130,9 +129,9 @@ final List<IconTuple> icons = [''');
 
   buf.writeln('];');
 
-  File(filename).writeAsStringSync(buf.toString());
-
-  print('wrote $filename');
+  final dest = path.join(iconGeneratorLib, filename);
+  File(dest).writeAsStringSync(buf.toString());
+  print('wrote $dest');
 }
 
 Future<void> generateIcons(String appFolder) async {
@@ -159,6 +158,13 @@ Future<void> generateIcons(String appFolder) async {
       .transform(utf8.decoder)
       .transform(const LineSplitter())
       .listen((String line) {
+    // Uncomment following condition if you have custom PUB_HOSTED_URL set in your env.
+    // if (RegExp(
+    //   r'Flutter assets will be downloaded from https?://.+. '
+    //   r'Make sure you trust this source!',
+    // ).hasMatch(line)) {
+    //   return;
+    // }
     hasError = true;
     errorText.writeln(line);
     stderr.writeln(line);

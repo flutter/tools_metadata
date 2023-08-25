@@ -17,12 +17,11 @@ import 'package:path/path.dart' as path;
 import '../common.dart';
 
 Future<void> main(List<String> args) async {
-  if (path.basename(Directory.current.path) != 'tools_metadata') {
-    fail('Please run this tool from the root of the repo.');
-  }
+  await checkRunFromTheProjectRoot();
 
-  final String flutterPackagePath =
-      path.absolute(path.join(flutterSdkPath, 'packages/flutter/lib'));
+  final String flutterPackagePath = path.absolute(
+    path.join(flutterSdkPath, 'packages', 'flutter', 'lib'),
+  );
 
   print('Setting up an analysis context...');
 
@@ -51,9 +50,10 @@ Future<void> main(List<String> args) async {
 
   print("Resolving class 'Widget'...");
 
-  final LibraryElementResult widgetsLibraryResult = await session
-          .getLibraryByUri('package:flutter/src/widgets/framework.dart')
-      as LibraryElementResult;
+  final LibraryElementResult widgetsLibraryResult =
+      await session.getLibraryByUri(
+    'package:flutter/src/widgets/framework.dart',
+  ) as LibraryElementResult;
   final LibraryElement widgetsLibrary = widgetsLibraryResult.element;
 
   final ClassElement widgetClass =
@@ -86,7 +86,7 @@ Future<void> main(List<String> args) async {
   // Normalize the output json.
   classes.sort((ClassElement a, ClassElement b) => a.name.compareTo(b.name));
 
-  final File file = File('resources/catalog/widgets.json');
+  final File file = File(path.join('resources', 'catalog', 'widgets.json'));
   print('Generating ${path.relative(path.absolute(file.path))}...');
   final List<Map<String, Object>> widgets = <Map<String, Object>>[];
   for (final ClassElement c in classes) {
