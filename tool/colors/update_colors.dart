@@ -18,11 +18,7 @@ final File cupertinoColorsFile =
 final String generatedFilesPath = path.join('tool', 'colors', 'generated');
 
 Future<void> main(List<String> args) async {
-  // Verify that we're running from the project root.
-  if (!await fromTheProjectRoot()) {
-    print('Please run this script from the directory root.');
-    exit(1);
-  }
+  await checkRunFromTheProjectRoot();
 
   print('Generating dart files:');
   await generateDartFiles();

@@ -5,6 +5,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:grinder/grinder.dart';
 import 'package:path/path.dart' as path;
 import 'package:yaml/yaml.dart';
 
@@ -62,15 +63,20 @@ Future<void> flutterRun(String script) async {
 
 /// Determine whether the environment is based from the project root
 /// by validate the name of the pubspec if it exists.
-Future<bool> fromTheProjectRoot([String? rootPath]) async {
+Future<void> checkRunFromTheProjectRoot([String? rootPath]) async {
+  final bool result;
   final yamlPath = path.join(
     rootPath ?? Directory.current.path,
     'pubspec.yaml',
   );
   if (!File(yamlPath).existsSync()) {
-    return false;
+    result = false;
+  } else {
+    final yamlMap =
+        (await loadYaml(await File(yamlPath).readAsString()) as YamlMap);
+    result = yamlMap['name'] == 'tool_metadata';
   }
-  final yamlMap =
-      (await loadYaml(await File(yamlPath).readAsString()) as YamlMap);
-  return yamlMap['name'] == 'tool_metadata';
+  if (!result) {
+    fail('Please run this tool from the root of the project.');
+  }
 }

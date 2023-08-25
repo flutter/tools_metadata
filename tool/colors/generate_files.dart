@@ -17,11 +17,7 @@ import 'generated/colors_css.dart' as css;
 final String outputFolder = path.join('resources', 'colors');
 
 Future<void> main(List<String> args) async {
-  // Verify that we're running from the project root.
-  if (!await fromTheProjectRoot()) {
-    print('Please run this script from the directory root.');
-    exitWith(1);
-  }
+  await checkRunFromTheProjectRoot();
 
   print('Generating property files:');
   generatePropertiesFiles();

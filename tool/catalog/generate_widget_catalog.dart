@@ -17,9 +17,7 @@ import 'package:path/path.dart' as path;
 import '../common.dart';
 
 Future<void> main(List<String> args) async {
-  if (!await fromTheProjectRoot()) {
-    fail('Please run this tool from the root of the repo.');
-  }
+  await checkRunFromTheProjectRoot();
 
   final String flutterPackagePath = path.absolute(
     path.join(flutterSdkPath, 'packages', 'flutter', 'lib'),
