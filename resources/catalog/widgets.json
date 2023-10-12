@@ -1,6 +1,6 @@
 {
   "flutter": {
-    "version": "3.14.0-0.1.pre",
+    "version": "3.16.0-0.1.pre",
     "channel": "beta"
   },
   "widgets": [
@@ -226,6 +226,12 @@
       "parent": "StatefulWidget",
       "library": "material",
       "description": "A Material Design app bar."
+    },
+    {
+      "name": "AppKitView",
+      "parent": "_DarwinView",
+      "library": "widgets",
+      "description": "Widget that contains a macOS AppKit view."
     },
     {
       "name": "AspectRatio",
@@ -556,7 +562,7 @@
     },
     {
       "name": "CupertinoActionSheet",
-      "parent": "StatelessWidget",
+      "parent": "StatefulWidget",
       "library": "cupertino",
       "description": "An iOS-style action sheet."
     },
@@ -580,7 +586,7 @@
     },
     {
       "name": "CupertinoAlertDialog",
-      "parent": "StatelessWidget",
+      "parent": "StatefulWidget",
       "library": "cupertino",
       "description": "An iOS-style alert dialog."
     },
@@ -1024,7 +1030,7 @@
     },
     {
       "name": "DraggableScrollableActuator",
-      "parent": "StatelessWidget",
+      "parent": "StatefulWidget",
       "library": "widgets",
       "description": "A widget that can notify a descendent [DraggableScrollableSheet] that it should reset its position to the initial state."
     },
@@ -1584,7 +1590,7 @@
       "parent": "RenderObjectWidget",
       "library": "widgets",
       "abstract": true,
-      "description": "A superclass for RenderObjectWidgets that configure RenderObject subclasses that have no children."
+      "description": "A superclass for [RenderObjectWidget]s that configure [RenderObject] subclasses that have no children."
     },
     {
       "name": "LicensePage",
@@ -1705,6 +1711,12 @@
       "parent": "StatelessWidget",
       "library": "material",
       "description": "A utility class for building Material buttons that depend on the ambient [ButtonTheme] and [Theme]."
+    },
+    {
+      "name": "MatrixTransition",
+      "parent": "AnimatedWidget",
+      "library": "widgets",
+      "description": "Animates the [Matrix4] of a transformed widget."
     },
     {
       "name": "MediaQuery",
@@ -1864,6 +1876,12 @@
       "description": "A widget that manages a set of child widgets with a stack discipline."
     },
     {
+      "name": "NavigatorPopHandler",
+      "parent": "StatefulWidget",
+      "library": "widgets",
+      "description": "Enables the handling of system back gestures."
+    },
+    {
       "name": "NestedScrollView",
       "parent": "StatefulWidget",
       "library": "widgets",
@@ -2007,13 +2025,13 @@
       "name": "PlatformSelectableRegionContextMenu",
       "parent": "StatelessWidget",
       "library": "widgets",
-      "description": "See `_platform_selectable_region_context_menu_io.dart` for full documentation."
+      "description": "A widget that provides native selection context menu for its child subtree."
     },
     {
       "name": "PlatformSelectableRegionContextMenu",
       "parent": "StatelessWidget",
       "library": "widgets",
-      "description": "A widget that provides native selection context menu for its child subtree."
+      "description": "See `_platform_selectable_region_context_menu_io.dart` for full documentation."
     },
     {
       "name": "PlatformViewLink",
@@ -2026,6 +2044,12 @@
       "parent": "LeafRenderObjectWidget",
       "library": "widgets",
       "description": "Integrates a platform view with Flutter's compositor, touch, and semantics subsystems."
+    },
+    {
+      "name": "PopScope",
+      "parent": "StatefulWidget",
+      "library": "widgets",
+      "description": "Manages system back gestures."
     },
     {
       "name": "PopupMenuButton",
@@ -2226,7 +2250,7 @@
       "parent": "Widget",
       "library": "widgets",
       "abstract": true,
-      "description": "RenderObjectWidgets provide the configuration for [RenderObjectElement]s, which wrap [RenderObject]s, which provide the actual rendering of the application."
+      "description": "[RenderObjectWidget]s provide the configuration for [RenderObjectElement]s, which wrap [RenderObject]s, which provide the actual rendering of the application."
     },
     {
       "name": "ReorderableDelayedDragStartListener",
@@ -2290,7 +2314,7 @@
     },
     {
       "name": "RotationTransition",
-      "parent": "AnimatedWidget",
+      "parent": "MatrixTransition",
       "library": "widgets",
       "description": "Animates the rotation of a widget."
     },
@@ -2326,7 +2350,7 @@
     },
     {
       "name": "ScaleTransition",
-      "parent": "AnimatedWidget",
+      "parent": "MatrixTransition",
       "library": "widgets",
       "description": "Animates the scale of a transformed widget."
     },
@@ -2387,13 +2411,13 @@
     },
     {
       "name": "SearchViewTheme",
-      "parent": "InheritedWidget",
+      "parent": "InheritedTheme",
       "library": "material",
       "description": "An inherited widget that defines the configuration in this widget's descendants for search view created by the [SearchAnchor] widget."
     },
     {
       "name": "SegmentedButton",
-      "parent": "StatelessWidget",
+      "parent": "StatefulWidget",
       "library": "material",
       "description": "A Material button that allows the user to select from limited set of options."
     },
@@ -2492,7 +2516,7 @@
       "parent": "RenderObjectWidget",
       "library": "widgets",
       "abstract": true,
-      "description": "A superclass for [RenderObjectWidget]s that configure [RenderObject] subclasses that have a single child slot. (This superclass only provides the storage for that child, it doesn't actually provide the updating logic.)"
+      "description": "A superclass for [RenderObjectWidget]s that configure [RenderObject] subclasses that have a single child slot."
     },
     {
       "name": "SingleChildScrollView",
@@ -2704,6 +2728,12 @@
       "parent": "SingleChildRenderObjectWidget",
       "library": "widgets",
       "description": "A sliver that contains a single box widget."
+    },
+    {
+      "name": "SliverVariedExtentList",
+      "parent": "SliverMultiBoxAdaptorWidget",
+      "library": "widgets",
+      "description": "A sliver that places its box children in a linear array and constrains them to have the corresponding extent returned by [itemExtentBuilder]."
     },
     {
       "name": "SliverVisibility",

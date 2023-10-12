@@ -57,7 +57,7 @@ Future<void> main(List<String> args) async {
   final LibraryElement widgetsLibrary = widgetsLibraryResult.element;
 
   final ClassElement widgetClass =
-      widgetsLibrary.getType('Widget') as ClassElement;
+      widgetsLibrary.getClass('Widget') as ClassElement;
 
   print('Resolving widget subclasses...');
   final List<ClassElement> classes = <ClassElement>[];
@@ -67,7 +67,7 @@ Future<void> main(List<String> args) async {
 
     final LibraryElement lib = resolvedLibraryResult.element;
     for (final Element element in lib.topLevelElements) {
-      if (element is! ClassElement || element.isMixin) {
+      if (element is! ClassElement || element is MixinElement) {
         continue;
       }
 
