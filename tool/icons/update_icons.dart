@@ -115,8 +115,8 @@ import 'package:flutter/$import.dart';
 class IconTuple {
   final IconData data;
   final String name;
-  final Key smallKey = new UniqueKey();
-  final Key largeKey = new UniqueKey();
+  final Key smallKey = UniqueKey();
+  final Key largeKey = UniqueKey();
 
   IconTuple(this.data, this.name);
 }
@@ -124,7 +124,7 @@ class IconTuple {
 final List<IconTuple> icons = [''');
 
   for (final Icon icon in icons) {
-    buf.writeln('  new IconTuple($prefix.${icon.name}, \'${icon.name}\'),');
+    buf.writeln('  IconTuple($prefix.${icon.name}, \'${icon.name}\'),');
   }
 
   buf.writeln('];');
