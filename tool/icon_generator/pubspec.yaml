@@ -8,15 +8,17 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_test: # Used by the app
+    sdk: flutter
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.4
   yaml: ^3.1.1
+  path: ^1.9.0
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
+  flutter_lints: ^3.0.1
 
 flutter:
   uses-material-design: true

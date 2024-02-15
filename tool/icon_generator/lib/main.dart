@@ -68,8 +68,7 @@ Future main() async {
 }
 
 class MyIconApp extends StatelessWidget {
-  MyIconApp(this.materialIcons, this.cupertinoIcons)
-      : super(key: new UniqueKey());
+  MyIconApp(this.materialIcons, this.cupertinoIcons) : super(key: UniqueKey());
 
   final List<material.IconTuple> materialIcons;
   final List<cupertino.IconTuple> cupertinoIcons;
@@ -77,9 +76,9 @@ class MyIconApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // We use this color as it works well in both light and dark themes.
-    const Color color = const Color(0xFF777777);
+    const Color color = Color(0xFF777777);
 
-    Stack cupertinoSmallStack = new Stack(
+    Stack cupertinoSmallStack = Stack(
       children: cupertinoIcons.map<Widget>((cupertino.IconTuple icon) {
         return RepaintBoundary(
           child: Icon(
@@ -92,7 +91,7 @@ class MyIconApp extends StatelessWidget {
       }).toList(),
     );
 
-    Stack cupertinoLargeStack = new Stack(
+    Stack cupertinoLargeStack = Stack(
       children: cupertinoIcons.map<Widget>((cupertino.IconTuple icon) {
         return RepaintBoundary(
           child: Icon(
@@ -105,7 +104,7 @@ class MyIconApp extends StatelessWidget {
       }).toList(),
     );
 
-    Stack materialSmallStack = new Stack(
+    Stack materialSmallStack = Stack(
       children: materialIcons.map<Widget>((material.IconTuple icon) {
         return RepaintBoundary(
           child: Icon(
@@ -118,7 +117,7 @@ class MyIconApp extends StatelessWidget {
       }).toList(),
     );
 
-    Stack materialLargeStack = new Stack(
+    Stack materialLargeStack = Stack(
       children: materialIcons.map<Widget>((material.IconTuple icon) {
         return RepaintBoundary(
           child: Icon(
@@ -134,13 +133,13 @@ class MyIconApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       home: Center(
-        child: new Column(
+        child: Column(
           children: <Widget>[
-            new Row(children: <Widget>[
+            Row(children: <Widget>[
               cupertinoSmallStack,
               materialSmallStack,
             ]),
-            new Row(children: <Widget>[
+            Row(children: <Widget>[
               cupertinoLargeStack,
               materialLargeStack,
             ]),
@@ -163,7 +162,7 @@ Future findAndSave(Key key, String path, {bool small = true}) async {
   final ByteData bytes =
       (await image.toByteData(format: ui.ImageByteFormat.png))!;
 
-  await new File(path).writeAsBytes(bytes.buffer.asUint8List());
+  await File(path).writeAsBytes(bytes.buffer.asUint8List());
 
   print('wrote $path');
 }
