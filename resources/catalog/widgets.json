@@ -1,6 +1,6 @@
 {
   "flutter": {
-    "version": "3.16.0-0.1.pre",
+    "version": "3.19.0-0.4.pre",
     "channel": "beta"
   },
   "widgets": [
@@ -301,7 +301,7 @@
     },
     {
       "name": "Banner",
-      "parent": "StatelessWidget",
+      "parent": "StatefulWidget",
       "library": "widgets",
       "description": "Displays a diagonal message above the corner of another widget."
     },
@@ -2919,7 +2919,7 @@
       "name": "TapRegion",
       "parent": "SingleChildRenderObjectWidget",
       "library": "widgets",
-      "description": "A widget that defines a region that can detect taps inside or outside of itself and any group of regions it belongs to, without participating in the [gesture disambiguation](https://flutter.dev/gestures/#gesture-disambiguation) system."
+      "description": "A widget that defines a region that can detect taps inside or outside of itself and any group of regions it belongs to, without participating in the [gesture disambiguation](https://flutter.dev/gestures/#gesture-disambiguation) system (other than to consume tap down events if [consumeOutsideTaps] is true)."
     },
     {
       "name": "TapRegionSurface",
