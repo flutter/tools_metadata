@@ -1,6 +1,6 @@
 {
   "flutter": {
-    "version": "3.16.0-0.1.pre",
+    "version": "3.22.0-0.1.pre",
     "channel": "beta"
   },
   "widgets": [
@@ -301,7 +301,7 @@
     },
     {
       "name": "Banner",
-      "parent": "StatelessWidget",
+      "parent": "StatefulWidget",
       "library": "widgets",
       "description": "Displays a diagonal message above the corner of another widget."
     },
@@ -1398,7 +1398,7 @@
       "name": "HtmlElementView",
       "parent": "StatelessWidget",
       "library": "widgets",
-      "description": "Embeds an HTML element in the Widget hierarchy in Flutter Web."
+      "description": "Embeds an HTML element in the Widget hierarchy in Flutter web."
     },
     {
       "name": "Icon",
@@ -2049,7 +2049,7 @@
       "name": "PopScope",
       "parent": "StatefulWidget",
       "library": "widgets",
-      "description": "Manages system back gestures."
+      "description": "Manages back navigation gestures."
     },
     {
       "name": "PopupMenuButton",
@@ -2919,7 +2919,7 @@
       "name": "TapRegion",
       "parent": "SingleChildRenderObjectWidget",
       "library": "widgets",
-      "description": "A widget that defines a region that can detect taps inside or outside of itself and any group of regions it belongs to, without participating in the [gesture disambiguation](https://flutter.dev/gestures/#gesture-disambiguation) system."
+      "description": "A widget that defines a region that can detect taps inside or outside of itself and any group of regions it belongs to, without participating in the [gesture disambiguation](https://flutter.dev/gestures/#gesture-disambiguation) system (other than to consume tap down events if [consumeOutsideTaps] is true)."
     },
     {
       "name": "TapRegionSurface",
@@ -3051,7 +3051,7 @@
       "name": "TooltipTheme",
       "parent": "InheritedTheme",
       "library": "material",
-      "description": "An inherited widget that defines the configuration for [Tooltip]s in this widget's subtree."
+      "description": "Applies a tooltip theme to descendant [Tooltip] widgets."
     },
     {
       "name": "TooltipVisibility",
